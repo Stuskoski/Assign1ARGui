@@ -21,7 +21,7 @@ public class CheckIfFileExistsAndHandleColor {
     public static void changeTextColorAndBtn(TextField textField, Button parseFile){
         File check = new File(textField.getText());
 
-        if(check.exists()){
+        if(check.exists() && check.isFile()){
             textField.setStyle("-fx-border-color: green;" +
                     "-fx-text-fill: darkgreen;");
             parseFile.setDisable(false);

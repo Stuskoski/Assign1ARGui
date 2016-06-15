@@ -1,5 +1,6 @@
 package CustomAlerts;
 
+import DatabaseActions.PromptForDatabaseCredentials;
 import javafx.scene.control.Alert;
 
 /**
@@ -7,15 +8,20 @@ import javafx.scene.control.Alert;
  */
 public class DatabaseAlerts {
     public void badConnection(){
+
+        PromptForDatabaseCredentials.createScreen(); //only if error
+
+        /**
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Database Error");
         alert.setHeaderText("Unable to connect to database");
-        alert.setContentText("Ensure all database credentials are correct:" +
-                "Url1 = \"jdbc:mysql://localhost:3306/assign1_db\";\n" +
-                "User = \"stus\";\n" +
-                "Password = \"Ownage3255%\";");
+        alert.setContentText("Ensure all database credentials are correct:\n" +
+                "Url1 = \"" + url + "\";\n" +
+                "User = \"" + user + "\";\n" +
+                "Password = \"" + pass + "\";");
 
         alert.showAndWait();
+         **/
     }
     public void goodConnection(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -23,6 +29,6 @@ public class DatabaseAlerts {
         alert.setHeaderText(null);
         alert.setContentText("Successful Database Connection");
 
-        alert.showAndWait();
+        alert.show();
     }
 }

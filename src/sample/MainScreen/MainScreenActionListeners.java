@@ -1,13 +1,15 @@
 package sample.MainScreen;
 
 import DatabaseActions.GetDatabaseConnection;
+import DatabaseActions.ModifyDatabaseMethods;
 import DatabaseActions.PromptForDatabaseCredentials;
-import FileActions.ReadFile;
+import DatabaseActions.UploadDataTab;
+import Settings.SettingsTab;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+
 import java.io.File;
+import java.sql.Connection;
 
 /**
  * Created by r730819 on 6/14/2016.
@@ -20,15 +22,14 @@ public class MainScreenActionListeners {
      * Create a listener that will check if the file
      * exists every time the user enters a character.
      *
-     * @param fileNameTextField Text field from the main stage
-     *                          that contains the file path name
      *
      * @param parseFile The button reference from the main stage
      *                  that is either disabled or enabled and allows
      *                  the user to proceed to parse the file or not.
      */
-    public static void createTextFieldListener(TextField fileNameTextField, Button parseFile){
-        fileNameTextField.setOnKeyReleased(event -> CheckIfFileExistsAndHandleColor.changeTextColorAndBtn(fileNameTextField, parseFile));
+    public static void createTextFieldListener(Button parseFile){
+        UploadDataTab.fileNameTextField.setOnKeyReleased(event ->
+                CheckIfFileExistsAndHandleColor.changeTextColorAndBtn(UploadDataTab.fileNameTextField, parseFile));
     }
 
     /**
@@ -42,10 +43,8 @@ public class MainScreenActionListeners {
      * let the user know file is good to go.
      *
      * @param chooseFile Button to enable the user to select a file
-     * @param fileNameTextField The text field that will populate with the files name upon selection
      */
-    public static void createChooseFileListener(Button chooseFile, TextField fileNameTextField,
-    Button parseFile){
+    public static void createChooseFileListener(Button chooseFile, Button parseFile){
         chooseFile.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose Customer Text File");
@@ -53,8 +52,8 @@ public class MainScreenActionListeners {
             File exportClearFile = fileChooser.showOpenDialog(Main.primaryStage);
 
             if (exportClearFile != null && exportClearFile.exists()) {
-                fileNameTextField.setText(exportClearFile.toString());
-                CheckIfFileExistsAndHandleColor.changeTextColorAndBtn(fileNameTextField, parseFile);
+                UploadDataTab.fileNameTextField.setText(exportClearFile.toString());
+                CheckIfFileExistsAndHandleColor.changeTextColorAndBtn(UploadDataTab.fileNameTextField, parseFile);
             }
 
         });
@@ -67,13 +66,18 @@ public class MainScreenActionListeners {
      * screen and a confirmation screen so they can connect to the
      * right place.
      *
+     * todo - fix this description
+     *
      * @param parseFile reference to button to start the parsing process
-     * @param fileNameTextField text field that contains the file path string
      */
-    public static void createParseFileBtnListner(Button parseFile, TextField fileNameTextField){
+    public static void createParseFileBtnListner(Button parseFile){
         parseFile.setOnAction(event -> {
-            ReadFile.readAndHandle(new File(fileNameTextField.getText()));
-            PromptForDatabaseCredentials.createScreen();
+            //ReadFile.readAndCreateObjects(new File(Main.fileNameTextField.getText()));
+            Connection connection = GetDatabaseConnection.getDB(SettingsTab.urlTextField.getText(),
+                    SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText());
+
+            if(connection!=null)
+                ModifyDatabaseMethods.attemptUploadData(connection);
             //GetDatabaseConnection.getDB();
         });
     }

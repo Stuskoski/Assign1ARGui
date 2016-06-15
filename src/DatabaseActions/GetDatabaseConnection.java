@@ -13,24 +13,23 @@ import java.util.Properties;
  * This class creates a database connection
  */
 public class GetDatabaseConnection {
-    public static void getDB(String url, String user, String password){
-        Connection conn1;
+    public static Connection getDB(String url, String user, String password){
+        Connection conn1 = null;
         DatabaseAlerts alerts = new DatabaseAlerts();
 
         try {
-           // String url1 = "jdbc:mysql://localhost:3306/assign1_db";
-            //String user = "stus";
-            //String password = "Ownage3255%";
-
             conn1 = DriverManager.getConnection(url, user, password);
-            if (conn1 != null) {
-                alerts.goodConnection();
-            }
-
         } catch (SQLException ex) {
+            //exception is thrown with conn1 == null
+        }
+
+        if (conn1 != null) {
+            alerts.goodConnection();
+        }else{
             alerts.badConnection();
         }
 
-        alerts.badConnection();
+        return conn1;
+
     }
 }

@@ -1,6 +1,10 @@
 package FileActions;
 
+import People.Person;
+import People.PersonsArrayList;
+
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Created by r730819 on 6/14/2016.
@@ -12,8 +16,9 @@ public class ReadFile {
     /**
      * @param inFile File passed from main to be read and handled
      */
-    public static void readAndHandle(File inFile){
+    public static void readAndCreateObjects(File inFile){
         String line;
+        ArrayList<Person> personArray = new ArrayList<>();
 
         try {
             // Create fileReader to read the inFile
@@ -24,17 +29,18 @@ public class ReadFile {
 
             //Read line by line from the file and process each line
             while((line = bufferedReader.readLine()) != null) {
-                HandleLinesFromFile.parseLines(line);
+                HandleLinesFromFile.parseLines(line, personArray);
             }
 
             // Always close files.
             bufferedReader.close();
-        }
-        catch(FileNotFoundException ex) {
-            System.out.println(inFile.toString() + " was not found");
-        }
-        catch(IOException ex) {
+
+
+        } catch(IOException ex) {
             System.out.println("Unable to read " + inFile.toString());
         }
+
+        PersonsArrayList.personsArray = personArray;
+
     }
 }
