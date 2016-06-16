@@ -17,13 +17,13 @@ public class ViewDatabaseTab {
     public static Tab viewDatabaseTab = new Tab();
     public static Button emailBtn = new Button("Email");
     public static Label emailLabel = new Label("Load data into table to unlock email");
+    public static Button refreshBtn = new Button("Refresh");
+    public static Button sortTxBtn = new Button("Texas Sort");
 
     public static void createViewDatabaseTab(){
         //Many many UI items, each one sorta builds on another
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
-        Button refreshBtn = new Button("Refresh");
-        Button sortTxBtn = new Button("Texas Sort");
         VBox buttonVbox = new VBox(25, refreshBtn, sortTxBtn, emailBtn, emailLabel);
         ScrollPane scrollPane = new ScrollPane();
         HBox midContHbox = new HBox(25, buttonVbox, scrollPane); //25 is spacing

@@ -12,13 +12,13 @@ import sample.MainScreen.MainScreenActionListeners;
 public class UploadDataTab {
     public static TextField fileNameTextField; //static reference for filename to use across stages
     public static Tab uploadDataTab = new Tab();
+    public static Button parseFile = new Button("Parse File");
 
     public static void createUploadDataTab(){
         //Variables
         GridPane gridPane = new GridPane();
         Label header = new Label("Upload Data");
         Button chooseFile = new Button("Choose File");
-        Button parseFile = new Button("Parse File");
         fileNameTextField = new TextField();
 
         //Gridpane options/adding nodes
@@ -36,7 +36,7 @@ public class UploadDataTab {
         //Create listeners
         MainScreenActionListeners.createTextFieldListener(parseFile);
         MainScreenActionListeners.createChooseFileListener(chooseFile, parseFile);
-        MainScreenActionListeners.createParseFileBtnListner(parseFile);
+        MainScreenActionListeners.createParseFileBanListener(parseFile);
 
         //Initially set the button to disabled till a file check is passed
         parseFile.setDisable(true);

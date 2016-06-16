@@ -11,10 +11,20 @@ import javafx.stage.Stage;
 /**
  * Created by r730819 on 6/14/2016.
  *
+ * Class that will create a screen to prompt
+ * the user that the program was unable
+ * to get a database connection.  The screen
+ * prompts the user to input the correct credentials.
+ *
+ * The only function receives a boolean uploadData in
+ * which it determines if it needs to set a action
+ * listener to upload data after confirmation or if
+ * false to just grab an sql connection and send it back.
+ *
  */
 public class PromptForDatabaseCredentials {
     public static Stage dbCredsStage = new Stage(); //prevents multiple windows from popping up without reference to close
-    public static void createScreen(){
+    public static void createScreen(String whoNeedsTheCreds){
         GridPane gridPane = new GridPane();
         Scene scene = new Scene(gridPane, 350, 225); //width height
         Label errorLabel = new Label("Error: Unable to make MySQL connection!");
@@ -53,8 +63,20 @@ public class PromptForDatabaseCredentials {
         gridPane.add(warningLabel, 0, 10, 4, 1);
 
         //Create action listeners
-        DatabaseActionListeners.createConfirmBtnListenerUploadData(confirmDetailsBtn, dbCredsStage, urlTextField,
-                userTextField, passTextField);
+        switch (whoNeedsTheCreds){
+            case "uploadData":
+                DatabaseActionListeners.createConfirmBtnListenerUploadData(confirmDetailsBtn, dbCredsStage, urlTextField,
+                        userTextField, passTextField);
+                break;
+            case "texasSort":
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForTexasSort(confirmDetailsBtn, dbCredsStage, urlTextField,
+                        userTextField, passTextField);
+                break;
+            case "refresh":
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForRefresh(confirmDetailsBtn, dbCredsStage, urlTextField,
+                        userTextField, passTextField);
+                break;
+        }
 
         //Stage options
         dbCredsStage.setTitle("Confirm DB Credentials");

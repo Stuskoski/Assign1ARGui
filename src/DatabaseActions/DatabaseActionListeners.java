@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import java.sql.Connection;
 
 /**
  * Created by r730819 on 6/15/2016.
@@ -33,20 +32,54 @@ public class DatabaseActionListeners {
             SettingsTab.userTextField.setText(user.getText());
             SettingsTab.passTextField.setText(pass.getText());
 
-            Connection connection = GetDatabaseConnection.getDB(url.getText(), user.getText(), pass.getText());
+            //Close the prompt, a new one will be created if connection fails again
+            dbStage.close();
 
-            if(connection!=null){
-                dbStage.close();
-                ModifyDatabaseMethods.attemptUploadData(connection);
-            }else{
-                // todo - throw error
-            }
+            //fire buttons after the new info is saved
+            UploadDataTab.parseFile.fire();
+
+
+        });
+    }
+
+    public static void createConfirmBtnListenerGetConnectionForTexasSort(Button confirm, Stage dbStage, TextField url, TextField user,
+                                                                         TextField pass){
+        confirm.setOnAction(event -> {
+
+            //Update the values in the settings page with the new correct ones
+            SettingsTab.urlTextField.setText(url.getText());
+            SettingsTab.userTextField.setText(user.getText());
+            SettingsTab.passTextField.setText(pass.getText());
+
+            dbStage.close();
+            
+            //fire buttons after the new info is saved
+            ViewDatabaseTab.sortTxBtn.fire();
+
+
+        });
+    }
+
+    public static void createConfirmBtnListenerGetConnectionForRefresh(Button confirm, Stage dbStage, TextField url, TextField user,
+                                                                         TextField pass){
+        confirm.setOnAction(event -> {
+
+            //Update the values in the settings page with the new correct ones
+            SettingsTab.urlTextField.setText(url.getText());
+            SettingsTab.userTextField.setText(user.getText());
+            SettingsTab.passTextField.setText(pass.getText());
+
+            dbStage.close();
+
+            //fire buttons after the new info is saved
+            ViewDatabaseTab.refreshBtn.fire();
+
 
         });
     }
 
     public static void createRefreshBtnListenerViewDBTab(Button refreshBtn, ScrollPane userScrollPane){
-        refreshBtn.setOnAction(event -> GetDataFromDatabase.getAllUsersFromDatabaseAndAddToVbox(userScrollPane));
+        refreshBtn.setOnAction(event -> GetDataFromDatabase.getAllUsersFromDatabaseAndAddToVbox(userScrollPane, true));
     }
 
     public static void createsortTxBtnListenerViewDBTab(Button sortTxBtn, ScrollPane userScrollPane){

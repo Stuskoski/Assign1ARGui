@@ -70,11 +70,11 @@ public class MainScreenActionListeners {
      *
      * @param parseFile reference to button to start the parsing process
      */
-    public static void createParseFileBtnListner(Button parseFile){
+    public static void createParseFileBanListener(Button parseFile){
         parseFile.setOnAction(event -> {
             //ReadFile.readAndCreateObjects(new File(Main.fileNameTextField.getText()));
             Connection connection = GetDatabaseConnection.getDB(SettingsTab.urlTextField.getText(),
-                    SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText());
+                    SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText(), "uploadData"); //true for prompt screen
 
             if(connection!=null)
                 ModifyDatabaseMethods.attemptUploadData(connection);

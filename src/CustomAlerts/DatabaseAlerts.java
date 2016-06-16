@@ -7,9 +7,9 @@ import javafx.scene.control.Alert;
  * Created by r730819 on 6/14/2016.
  */
 public class DatabaseAlerts {
-    public void badConnection(){
+    public void badConnection(String whoNeedsIt){
 
-        PromptForDatabaseCredentials.createScreen(); //only if error
+        PromptForDatabaseCredentials.createScreen(whoNeedsIt); //only if error
 
         /**
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
