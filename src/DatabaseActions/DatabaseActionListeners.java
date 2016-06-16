@@ -1,6 +1,8 @@
 package DatabaseActions;
 
-import Settings.SettingsTab;
+import Tabs.SettingsTab;
+import Tabs.UploadDataTab;
+import Tabs.ViewDatabaseTab;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

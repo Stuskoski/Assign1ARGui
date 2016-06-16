@@ -2,8 +2,8 @@ package augustus.MainScreen;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;
-import DatabaseActions.UploadDataTab;
-import Settings.SettingsTab;
+import Tabs.UploadDataTab;
+import Tabs.SettingsTab;
 import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 

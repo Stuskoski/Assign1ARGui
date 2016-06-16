@@ -1,4 +1,4 @@
-package DatabaseActions;
+package Tabs;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.*;

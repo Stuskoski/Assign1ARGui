@@ -1,4 +1,4 @@
-package augustus.MainScreen;
+package Tabs;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.*;

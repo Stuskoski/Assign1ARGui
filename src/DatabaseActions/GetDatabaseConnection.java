@@ -1,6 +1,7 @@
 package DatabaseActions;
 
 import CustomAlerts.DatabaseAlerts;
+import CustomAlerts.EmailAlerts;
 import javafx.scene.control.Alert;
 
 import java.sql.Connection;
@@ -55,6 +56,7 @@ public class GetDatabaseConnection {
     public static Connection getDBForEmail(String url, String user, String password, String whoNeedsIt, String email, String message){
         Connection conn1 = null;
         DatabaseAlerts alerts = new DatabaseAlerts();
+        EmailAlerts emailAlerts = new EmailAlerts();
 
         try {
             conn1 = DriverManager.getConnection(url, user, password);
@@ -63,7 +65,7 @@ public class GetDatabaseConnection {
         }
 
         if (conn1 != null) {
-            alerts.goodConnection();
+            emailAlerts.goodSend();
         }else{
             alerts.badConnection(whoNeedsIt, email, message);
         }

@@ -1,8 +1,10 @@
 package DatabaseActions;
 
+import CustomAlerts.EmailAlerts;
 import People.Person;
 import People.PersonArrayListDownloadedFromDB;
-import Settings.SettingsTab;
+import Tabs.SettingsTab;
+import Tabs.ViewDatabaseTab;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -66,6 +68,12 @@ public class GetDataFromDatabaseWithEmail {
 
                 //Create vbox that holds all the vbox's created below
                 VBox overallVbox = new VBox(20);
+                overallVbox.setAlignment(Pos.CENTER);
+
+                //Add texas title to vbox for display and color red for visibility
+                Label customerTitle = new Label("=== Sequential Customer List ===");
+                customerTitle.setStyle("-fx-text-fill: darkred;");
+                overallVbox.getChildren().add(customerTitle);
 
                 int counter = 1;
 
@@ -125,14 +133,18 @@ public class GetDataFromDatabaseWithEmail {
                         }
                     });
 
+                    //Add some color to those email links
                     emailLabel.setOnMouseEntered(event -> emailLabel.setStyle("-fx-text-fill: black; -fx-underline: true;"));
                     emailLabel.setOnMouseExited(event -> emailLabel.setStyle("-fx-text-fill: blue; -fx-underline: true;"));
-
 
                     //Create vbox to add to scrollpane
                     VBox personDetailsVbox = new VBox(3);
                     personDetailsVbox.getChildren().addAll(customerNumLabel, nameLabel, emailLabel, homeAddrLabel,
                             cityLabel, timeStampLabel);
+
+                    //Add a box around the vbox to see better
+                    personDetailsVbox.setStyle("-fx-border-color: black");
+                    personDetailsVbox.setAlignment(Pos.CENTER);
 
                     //Add to overall vbox
                     overallVbox.getChildren().add(personDetailsVbox);
@@ -176,7 +188,7 @@ public class GetDataFromDatabaseWithEmail {
 
             //Create vbox that holds all the vbox's created below
             VBox overallVbox = new VBox(20);
-            overallVbox.setAlignment(Pos.TOP_CENTER);
+            overallVbox.setAlignment(Pos.CENTER);
 
             ArrayList<Person> sortedArray;
             ArrayList<Person> tempArray;
@@ -262,6 +274,7 @@ public class GetDataFromDatabaseWithEmail {
 
                 //Add a box around the vbox to see better
                 personDetailsVbox.setStyle("-fx-border-color: black");
+                personDetailsVbox.setAlignment(Pos.CENTER);
 
                 //Add to overall vbox
                 overallVbox.getChildren().add(personDetailsVbox);
@@ -406,7 +419,8 @@ public class GetDataFromDatabaseWithEmail {
 
             //send good log
         }catch (MessagingException mex) {
-            mex.printStackTrace();
+            EmailAlerts alerts = new EmailAlerts();
+            alerts.badSend();
             //send bad log
         }
     }

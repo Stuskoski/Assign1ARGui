@@ -1,8 +1,9 @@
 package augustus.MainScreen;
 
-import DatabaseActions.UploadDataTab;
-import DatabaseActions.ViewDatabaseTab;
-import Settings.SettingsTab;
+import Tabs.UploadDataTab;
+import Tabs.ViewDatabaseTab;
+import Tabs.SettingsTab;
+import Tabs.HomeTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

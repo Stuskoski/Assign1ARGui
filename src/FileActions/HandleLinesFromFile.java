@@ -28,11 +28,6 @@ public class HandleLinesFromFile {
 
         createUserAndAddToArray(personDetails, personArray);
 
-
-        //Handle each word
-        for(String str : personDetails){
-            System.out.println(str);
-        }
     }
 
     /**
@@ -50,7 +45,7 @@ public class HandleLinesFromFile {
     public static void createUserAndAddToArray(String personDetails[], ArrayList<Person> personArray){
         if(personDetails.length != 7){
             return;
-            //todo throw error here
+            //todo write log
         }
 
         Person person = new Person();

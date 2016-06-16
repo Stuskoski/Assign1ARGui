@@ -3,7 +3,8 @@ package DatabaseActions;
 import FileActions.ReadFile;
 import People.Person;
 import People.PersonsArrayList;
-import Settings.SettingsTab;
+import Tabs.SettingsTab;
+import Tabs.UploadDataTab;
 
 import java.io.File;
 import java.sql.Connection;

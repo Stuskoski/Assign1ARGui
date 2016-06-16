@@ -1,5 +1,6 @@
-package DatabaseActions;
+package Tabs;
 
+import DatabaseActions.DatabaseActionListeners;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -57,7 +58,7 @@ public class ViewDatabaseTab {
 
         //Scroll Pane Options
         scrollPane.setPrefHeight(250);
-        scrollPane.setPrefWidth(200);
+        scrollPane.setPrefWidth(210);
 
         //Create action listeners
         DatabaseActionListeners.createRefreshBtnListenerViewDBTab(refreshBtn, scrollPane, emailBtn);

@@ -1,6 +1,6 @@
 package DatabaseActions;
 
-import Settings.SettingsTab;
+import Tabs.SettingsTab;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;

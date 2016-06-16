@@ -1,4 +1,4 @@
-package Settings;
+package Tabs;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

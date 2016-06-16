@@ -37,6 +37,7 @@ public class ReadFile {
 
 
         } catch(IOException ex) {
+            //log
             System.out.println("Unable to read " + inFile.toString());
         }
 
