@@ -1,4 +1,4 @@
-package sample.MainScreen;
+package augustus.MainScreen;
 
 import DatabaseActions.UploadDataTab;
 import DatabaseActions.ViewDatabaseTab;
@@ -50,7 +50,7 @@ public class Main extends Application {
 
         //Stage options passed from main
         primaryStage.setTitle("Assignment 1");
-        primaryStage.setScene(new Scene(borderPane, 400, 375));
+        primaryStage.setScene(new Scene(borderPane, 475, 415));//width height
 
         primaryStage.show();
 

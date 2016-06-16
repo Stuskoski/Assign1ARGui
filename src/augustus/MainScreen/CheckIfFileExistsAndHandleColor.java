@@ -1,4 +1,4 @@
-package sample.MainScreen;
+package augustus.MainScreen;
 
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;

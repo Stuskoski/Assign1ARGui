@@ -17,28 +17,32 @@ public class ViewDatabaseTab {
     public static Tab viewDatabaseTab = new Tab();
     public static Button emailBtn = new Button("Email");
     public static Label emailLabel = new Label("Load data into table to unlock email");
-    public static Button refreshBtn = new Button("Refresh");
+    public static Button refreshBtn = new Button("Load Data");
     public static Button sortTxBtn = new Button("Texas Sort");
 
     public static void createViewDatabaseTab(){
         //Many many UI items, each one sorta builds on another
         GridPane gridPane = new GridPane();
-        BorderPane borderPane = new BorderPane();
-        VBox buttonVbox = new VBox(25, refreshBtn, sortTxBtn, emailBtn, emailLabel);
-        ScrollPane scrollPane = new ScrollPane();
-        HBox midContHbox = new HBox(25, buttonVbox, scrollPane); //25 is spacing
         Label title = new Label("View Database Entries");
+        Label customerTitleLabel = new Label("Database Customers");
+        HBox customerTitleHbox = new HBox(customerTitleLabel);
+        BorderPane borderPane = new BorderPane();
+        ScrollPane scrollPane = new ScrollPane();
+        VBox buttonVbox = new VBox(25, refreshBtn, sortTxBtn, emailBtn, emailLabel);
+        VBox scrollVbox = new VBox(5, customerTitleHbox, scrollPane);
+        HBox midContHbox = new HBox(25, buttonVbox, scrollVbox); //25 is spacing
         HBox titleHbox = new HBox(title);
 
         //titleHbox options
         titleHbox.setAlignment(Pos.CENTER);
+        customerTitleHbox.setAlignment(Pos.CENTER);
 
 
         //buttonVbox options
         buttonVbox.setAlignment(Pos.CENTER);
-        refreshBtn.setPrefWidth(75);
-        sortTxBtn.setPrefWidth(75);
-        emailBtn.setPrefWidth(75);
+        refreshBtn.setPrefWidth(150);
+        sortTxBtn.setPrefWidth(150);
+        emailBtn.setPrefWidth(150);
         emailBtn.setDisable(true);
 
         //GridPane Options
@@ -53,12 +57,12 @@ public class ViewDatabaseTab {
 
         //Scroll Pane Options
         scrollPane.setPrefHeight(250);
-        scrollPane.setPrefWidth(150);
+        scrollPane.setPrefWidth(200);
 
         //Create action listeners
-        DatabaseActionListeners.createRefreshBtnListenerViewDBTab(refreshBtn, scrollPane);
-        DatabaseActionListeners.createsortTxBtnListenerViewDBTab(sortTxBtn, scrollPane);
-        DatabaseActionListeners.createEmailBtnListenerViewDBTab(emailBtn, scrollPane);
+        DatabaseActionListeners.createRefreshBtnListenerViewDBTab(refreshBtn, scrollPane, emailBtn);
+        DatabaseActionListeners.createSortTxBtnListenerViewDBTab(sortTxBtn, scrollPane, emailBtn);
+        DatabaseActionListeners.createEmailBtnListenerViewDBTab(emailBtn);
 
 
         //Tab Options
@@ -69,6 +73,8 @@ public class ViewDatabaseTab {
         //Added graphics
         title.setStyle("-fx-font-weight: bold");
         emailLabel.setStyle("-fx-text-fill: darkred;");
+        customerTitleLabel.setStyle("-fx-font-weight: bold");
+
 
     }
 }

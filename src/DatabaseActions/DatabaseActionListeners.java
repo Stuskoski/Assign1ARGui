@@ -6,9 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * Created by r730819 on 6/15/2016.
- */
 public class DatabaseActionListeners {
 
     /**
@@ -102,15 +99,21 @@ public class DatabaseActionListeners {
         });
     }
 
-    public static void createRefreshBtnListenerViewDBTab(Button refreshBtn, ScrollPane userScrollPane){
-        refreshBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.getAllUsersFromDatabaseAndAddToVbox(userScrollPane, true));
+    public static void createRefreshBtnListenerViewDBTab(Button refreshBtn, ScrollPane userScrollPane, Button emailBtn){
+        refreshBtn.setOnAction(event -> {
+            emailBtn.setText("Send Unsorted Email");
+            GetDataFromDatabaseWithEmail.getAllUsersFromDatabaseAndAddToVbox(userScrollPane, true);
+        });
     }
 
-    public static void createsortTxBtnListenerViewDBTab(Button sortTxBtn, ScrollPane userScrollPane){
-        sortTxBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane, true));
+    public static void createSortTxBtnListenerViewDBTab(Button sortTxBtn, ScrollPane userScrollPane, Button emailBtn){
+        sortTxBtn.setOnAction(event -> {
+            emailBtn.setText("Send Sorted Email");
+            GetDataFromDatabaseWithEmail.getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane);
+        });
     }
 
-    public static void createEmailBtnListenerViewDBTab(Button emailBtn, ScrollPane userScrollPane){
-        emailBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.sortUsersAndSendViaEmail(userScrollPane));
+    public static void createEmailBtnListenerViewDBTab(Button emailBtn){
+        emailBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.sendListViaEmail(emailBtn.getText()));
     }
 }

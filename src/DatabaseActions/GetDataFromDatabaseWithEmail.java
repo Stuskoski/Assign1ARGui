@@ -3,11 +3,17 @@ package DatabaseActions;
 import People.Person;
 import People.PersonArrayListDownloadedFromDB;
 import Settings.SettingsTab;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
-
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +24,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Properties;
+
 
 /**
  * Created by r730819 on 6/15/2016.
@@ -158,17 +166,17 @@ public class GetDataFromDatabaseWithEmail {
     /**
      * Similar to the function above but pulls them in sorted order
      * @param userScrollPane Reference to the scrollpane in the ViewDatabaseTab
-     * @param selfCall Boolean to determine if email button is calling or itself
-     *                 is calling.  If email calls the array will be populated but
-     *                 a call to the database will NOT be made.  If itself is calling
-     *                 then the array will be sorted and a database call WILL be made
      */
-    public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane, boolean selfCall){
-        if(selfCall)
-            getAllUsersFromDatabaseAndAddToVbox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
+    public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane){
+
+        getAllUsersFromDatabaseAndAddToVbox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
 
         //If the array is not empty, proceed..else do nothing
         if(!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
+
+            //Create vbox that holds all the vbox's created below
+            VBox overallVbox = new VBox(20);
+            overallVbox.setAlignment(Pos.TOP_CENTER);
 
             ArrayList<Person> sortedArray;
             ArrayList<Person> tempArray;
@@ -176,12 +184,18 @@ public class GetDataFromDatabaseWithEmail {
             tempArray = new ArrayList<>(PersonArrayListDownloadedFromDB.arrayList); //copy over the array
             sortedArray = new ArrayList<>();
 
+            //Add texas title to vbox for display and color red for visibility
+            Label texasTitle = new Label("=== Texas Customers ===");
+            texasTitle.setStyle("-fx-text-fill: darkred;");
+            overallVbox.getChildren().add(texasTitle);
+
             //Add all the texas persons first
             for (Person person : tempArray) {
                 if (person.state.toLowerCase().equals("tx")) {
                     sortedArray.add(person);
                 }
             }
+
 
             //add the rest of the non texans
             for (Person person : tempArray) {
@@ -193,10 +207,20 @@ public class GetDataFromDatabaseWithEmail {
             //Make the static array sorted
             PersonArrayListDownloadedFromDB.arrayList = new ArrayList<>(sortedArray);
 
-            //Create vbox that holds all the vbox's created below
-            VBox overallVbox = new VBox(20);
-
+            boolean firstNonTexan = true;
             for (Person person : sortedArray) {
+
+                //Determine the correct position to put the next label
+                if(!person.state.toLowerCase().equals("tx")){
+                    if(firstNonTexan){
+                        //Add non-texas title to vbox for display and color red for visibility
+                        Label nonTexasTitle = new Label("=== Out of State Customers ===");
+                        nonTexasTitle.setStyle("-fx-text-fill: darkred;");
+                        overallVbox.getChildren().add(nonTexasTitle);
+                        firstNonTexan = false;
+                    }
+                }
+
                 //Create labels and add to the vbox, I can do this in another method but for now do it here...
                 Label customerNumLabel = new Label("Customer #" + person.customerNum);
                 Label nameLabel = new Label(person.lastName + " " + person.firstName);
@@ -208,7 +232,7 @@ public class GetDataFromDatabaseWithEmail {
                 //custom email link function
                 emailLabel.setStyle("-fx-text-fill: blue; -fx-underline: true;");
 
-                //Ehh just for fun
+                //Ehh just for fun add option to email people
                 emailLabel.setOnMouseClicked(event -> {
                     Desktop desktop;
                     if (Desktop.isDesktopSupported()
@@ -236,9 +260,11 @@ public class GetDataFromDatabaseWithEmail {
                 personDetailsVbox.getChildren().addAll(customerNumLabel, nameLabel, emailLabel, homeAddrLabel,
                         cityLabel, timeStampLabel);
 
+                //Add a box around the vbox to see better
+                personDetailsVbox.setStyle("-fx-border-color: black");
+
                 //Add to overall vbox
                 overallVbox.getChildren().add(personDetailsVbox);
-
             }
 
             //Add the vbox to the scroll pane
@@ -252,8 +278,8 @@ public class GetDataFromDatabaseWithEmail {
      * to send the email to.  Upon confirmation will open
      * the default email app to send the email.
      */
-    public static void sortUsersAndSendViaEmail(ScrollPane userScrollPane){
-        getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane, false);//sort the array and the gui list
+    public static void sendListViaEmail(String toSortOrNotToSort){
+        //getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane, false); ---No longer sort before, option to send unsorted
 
         TextInputDialog dialog = new TextInputDialog("user@domain.com");
         dialog.setTitle("Email Prompt");
@@ -264,45 +290,124 @@ public class GetDataFromDatabaseWithEmail {
         Optional<String> result = dialog.showAndWait();
 
         // Call method to send email from the result
-        result.ifPresent(GetDataFromDatabaseWithEmail::sendEmail);
+        if (result.isPresent()){
+            if(toSortOrNotToSort.equals("Send Unsorted Email"))
+                createEmail(result.get(), false);
+            else
+                createEmail(result.get(), true);
+        }
     }
 
-    private static void sendEmail(String email){
-        String emailMsg = "=== Texas Customers ===\n\n";
-        boolean firstNonTexan = true;
+    /**
+     * Creates the email with it being sorted or unsorted
+     * and then sends to the next method to be sent via Javax
+     * @param email The email to send to
+     * @param sortEmail Boolean whether to sort or not
+     */
+    private static void createEmail(String email, boolean sortEmail){
+        //send a sorted email
+        if(sortEmail){
+            String emailMsg = "=== Texas Customers ===\n\n";
+            boolean firstNonTexan = true;
 
-        //Go through all the persons and create the email from it
-        for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
-            String personString = "";
+            //Go through all the persons and create the email from it
+            for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
+                String personString = "";
 
-            //Determine when there are no more Texas Persons
-            if(!person.state.toLowerCase().equals("tx")){
-                if(firstNonTexan){
-                    personString = "=== Out of State Customers ===\n\n";
-                    firstNonTexan = false;
+                //Determine when there are no more Texas Persons
+                if(!person.state.toLowerCase().equals("tx")){
+                    if(firstNonTexan){
+                        personString = "=== Out of State Customers ===\n\n";
+                        firstNonTexan = false;
+                    }
                 }
+
+                //Create strings to be sent in the email
+                personString += ("Customer #" + person.customerNum + "\n");
+                personString += (person.lastName + " " + person.firstName + "\n");
+                personString += (person.emailAddr + "\n");
+                personString += (person.homeAddr + "\n");
+                personString += (person.city + ", " + person.state + " " + person.zipCode + "\n\n\n");
+                //personString += (person.timeStamp + "\n\n\n"); ---don't send timestamp for now
+
+                //Add person text to overall email message
+                emailMsg += personString;
             }
 
-            //Create strings to be sent in the email
-            personString += ("Customer #" + person.customerNum + "\n");
-            personString += (person.lastName + " " + person.firstName + "\n");
-            personString += (person.emailAddr + "\n");
-            personString += (person.homeAddr + "\n");
-            personString += (person.city + ", " + person.state + " " + person.zipCode + "\n");
-            personString += (person.timeStamp + "\n\n\n");
+            sendJavaxEmail(email, emailMsg);
 
-            //Add person text to overall email message
-            emailMsg += personString;
+            //Update timestamps
+            ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
+
+
+            //Send a unsorted email
+        }else {
+            String emailMsg = "=== Customer List ===\n\n";
+
+            //Go through all the persons and create the email from it
+            for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
+                String personString = "";
+
+                //Create strings to be sent in the email
+                personString += ("Customer #" + person.customerNum + "\n");
+                personString += (person.lastName + " " + person.firstName + "\n");
+                personString += (person.emailAddr + "\n");
+                personString += (person.homeAddr + "\n");
+                personString += (person.city + ", " + person.state + " " + person.zipCode + "\n\n\n");
+                //personString += (person.timeStamp + "\n\n\n"); ---don't send timestamp for now
+
+                //Add person text to overall email message
+                emailMsg += personString;
+            }
+
+            sendJavaxEmail(email, emailMsg);
+
+            //Update timestamps
+            ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
+
         }
-
-        System.out.println("Email: " + email +"\n" +
-        "Body: \n" + emailMsg);
-
-        //Update timestamps
-        ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
-
     }
-    private static void updateTimeStamps(){
 
+    private static void sendJavaxEmail(String toEmail, String message){
+
+        // Sender's email ID needs to be mentioned
+        String from = "Rutkoski.Augustus@heb.com";
+
+        // Assuming you are sending email from localhost
+        String host = "exchange.heb.com";
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.smtp.host", host);
+
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties);
+
+        try{
+            // Create a default MimeMessage object.
+            MimeMessage mimeMessage = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            mimeMessage.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+
+            // Set Subject: header field
+            mimeMessage.setSubject("Assignment 1 - Customer List");
+
+            // Now set the actual message
+            mimeMessage.setText(message);
+
+            // Send message
+            Transport.send(mimeMessage);
+
+            //send good log
+        }catch (MessagingException mex) {
+            mex.printStackTrace();
+            //send bad log
+        }
     }
 }

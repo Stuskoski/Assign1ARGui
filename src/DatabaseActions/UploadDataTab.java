@@ -3,8 +3,8 @@ package DatabaseActions;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import sample.MainScreen.CheckIfFileExistsAndHandleColor;
-import sample.MainScreen.MainScreenActionListeners;
+import augustus.MainScreen.CheckIfFileExistsAndHandleColor;
+import augustus.MainScreen.MainScreenActionListeners;
 
 /**
  * Created by r730819 on 6/15/2016.
