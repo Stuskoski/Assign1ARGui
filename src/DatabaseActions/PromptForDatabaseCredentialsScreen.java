@@ -22,9 +22,9 @@ import javafx.stage.Stage;
  * false to just grab an sql connection and send it back.
  *
  */
-public class PromptForDatabaseCredentials {
+public class PromptForDatabaseCredentialsScreen {
     public static Stage dbCredsStage = new Stage(); //prevents multiple windows from popping up without reference to close
-    public static void createScreen(String whoNeedsTheCreds){
+    public static void createScreen(String whoNeedsTheCreds, String optionalEmail, String optionalMsg){
         GridPane gridPane = new GridPane();
         Scene scene = new Scene(gridPane, 350, 225); //width height
         Label errorLabel = new Label("Error: Unable to make MySQL connection!");
@@ -75,6 +75,10 @@ public class PromptForDatabaseCredentials {
             case "refresh":
                 DatabaseActionListeners.createConfirmBtnListenerGetConnectionForRefresh(confirmDetailsBtn, dbCredsStage, urlTextField,
                         userTextField, passTextField);
+                break;
+            case "email":
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForEmail(confirmDetailsBtn, dbCredsStage, urlTextField,
+                        userTextField, passTextField, optionalEmail, optionalMsg);
                 break;
         }
 

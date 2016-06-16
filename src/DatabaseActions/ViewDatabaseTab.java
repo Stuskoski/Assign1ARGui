@@ -58,7 +58,7 @@ public class ViewDatabaseTab {
         //Create action listeners
         DatabaseActionListeners.createRefreshBtnListenerViewDBTab(refreshBtn, scrollPane);
         DatabaseActionListeners.createsortTxBtnListenerViewDBTab(sortTxBtn, scrollPane);
-        DatabaseActionListeners.createEmailBtnListenerViewDBTab(emailBtn);
+        DatabaseActionListeners.createEmailBtnListenerViewDBTab(emailBtn, scrollPane);
 
 
         //Tab Options

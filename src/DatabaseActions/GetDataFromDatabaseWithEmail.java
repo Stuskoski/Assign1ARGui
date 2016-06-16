@@ -2,9 +2,7 @@ package DatabaseActions;
 
 import People.Person;
 import People.PersonArrayListDownloadedFromDB;
-import People.PersonsArrayList;
 import Settings.SettingsTab;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
@@ -24,7 +22,7 @@ import java.util.Optional;
 /**
  * Created by r730819 on 6/15/2016.
  */
-public class GetDataFromDatabase {
+public class GetDataFromDatabaseWithEmail {
 
     /**
      * Attempts to make a database connection and if ok will
@@ -160,9 +158,14 @@ public class GetDataFromDatabase {
     /**
      * Similar to the function above but pulls them in sorted order
      * @param userScrollPane Reference to the scrollpane in the ViewDatabaseTab
+     * @param selfCall Boolean to determine if email button is calling or itself
+     *                 is calling.  If email calls the array will be populated but
+     *                 a call to the database will NOT be made.  If itself is calling
+     *                 then the array will be sorted and a database call WILL be made
      */
-    public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane){
-        getAllUsersFromDatabaseAndAddToVbox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
+    public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane, boolean selfCall){
+        if(selfCall)
+            getAllUsersFromDatabaseAndAddToVbox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
 
         //If the array is not empty, proceed..else do nothing
         if(!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
@@ -187,14 +190,15 @@ public class GetDataFromDatabase {
                 }
             }
 
-            int counter = 1;
+            //Make the static array sorted
+            PersonArrayListDownloadedFromDB.arrayList = new ArrayList<>(sortedArray);
 
             //Create vbox that holds all the vbox's created below
             VBox overallVbox = new VBox(20);
 
             for (Person person : sortedArray) {
                 //Create labels and add to the vbox, I can do this in another method but for now do it here...
-                Label customerNumLabel = new Label("Customer #" + counter);
+                Label customerNumLabel = new Label("Customer #" + person.customerNum);
                 Label nameLabel = new Label(person.lastName + " " + person.firstName);
                 Label emailLabel = new Label(person.emailAddr);
                 Label homeAddrLabel = new Label(person.homeAddr);
@@ -235,7 +239,6 @@ public class GetDataFromDatabase {
                 //Add to overall vbox
                 overallVbox.getChildren().add(personDetailsVbox);
 
-                counter++;//increment customer number
             }
 
             //Add the vbox to the scroll pane
@@ -249,7 +252,9 @@ public class GetDataFromDatabase {
      * to send the email to.  Upon confirmation will open
      * the default email app to send the email.
      */
-    public static void sortUsersAndSendViaEmail(){
+    public static void sortUsersAndSendViaEmail(ScrollPane userScrollPane){
+        getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane, false);//sort the array and the gui list
+
         TextInputDialog dialog = new TextInputDialog("user@domain.com");
         dialog.setTitle("Email Prompt");
         dialog.setHeaderText("Email Sorted List");
@@ -259,10 +264,45 @@ public class GetDataFromDatabase {
         Optional<String> result = dialog.showAndWait();
 
         // Call method to send email from the result
-        result.ifPresent(GetDataFromDatabase::sendEmail);
+        result.ifPresent(GetDataFromDatabaseWithEmail::sendEmail);
     }
 
     private static void sendEmail(String email){
-        System.out.println("email sent to " + email);
+        String emailMsg = "=== Texas Customers ===\n\n";
+        boolean firstNonTexan = true;
+
+        //Go through all the persons and create the email from it
+        for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
+            String personString = "";
+
+            //Determine when there are no more Texas Persons
+            if(!person.state.toLowerCase().equals("tx")){
+                if(firstNonTexan){
+                    personString = "=== Out of State Customers ===\n\n";
+                    firstNonTexan = false;
+                }
+            }
+
+            //Create strings to be sent in the email
+            personString += ("Customer #" + person.customerNum + "\n");
+            personString += (person.lastName + " " + person.firstName + "\n");
+            personString += (person.emailAddr + "\n");
+            personString += (person.homeAddr + "\n");
+            personString += (person.city + ", " + person.state + " " + person.zipCode + "\n");
+            personString += (person.timeStamp + "\n\n\n");
+
+            //Add person text to overall email message
+            emailMsg += personString;
+        }
+
+        System.out.println("Email: " + email +"\n" +
+        "Body: \n" + emailMsg);
+
+        //Update timestamps
+        ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
+
+    }
+    private static void updateTimeStamps(){
+
     }
 }

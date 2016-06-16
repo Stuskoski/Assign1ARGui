@@ -2,7 +2,6 @@ package sample.MainScreen;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;
-import DatabaseActions.PromptForDatabaseCredentials;
 import DatabaseActions.UploadDataTab;
 import Settings.SettingsTab;
 import javafx.scene.control.Button;
