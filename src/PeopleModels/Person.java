@@ -1,4 +1,4 @@
-package People;
+package PeopleModels;
 
 /**
  * A person object that is created
@@ -7,7 +7,7 @@ package People;
  *
  * These person objects are stored in a
  * static array list contained in
- * People.PersonsArrayList which
+ * PeopleModels.PersonsArrayList which
  * is populated in FileActions.ReadFile.
  *
  * Created by r730819 on 6/15/2016.

@@ -1,6 +1,7 @@
 package Tabs;
 
 import DatabaseActions.DatabaseActionListeners;
+import FileActions.CustomLogger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -57,8 +58,9 @@ public class ViewDatabaseTab {
         borderPane.setCenter(gridPane);
 
         //Scroll Pane Options
-        scrollPane.setPrefHeight(250);
+        scrollPane.setPrefHeight(275);
         scrollPane.setPrefWidth(210);
+        scrollPane.setMaxHeight(275);
 
         //Create action listeners
         DatabaseActionListeners.createRefreshBtnListenerViewDBTab(refreshBtn, scrollPane, emailBtn);
@@ -76,6 +78,7 @@ public class ViewDatabaseTab {
         emailLabel.setStyle("-fx-text-fill: darkred;");
         customerTitleLabel.setStyle("-fx-font-weight: bold");
 
+       // CustomLogger.createLogMsgAndSave("View database tab loaded");
 
     }
 }

@@ -1,6 +1,7 @@
 package CustomAlerts;
 
 import DatabaseActions.PromptForDatabaseCredentialsScreen;
+import FileActions.CustomLogger;
 import javafx.scene.control.Alert;
 
 /**
@@ -8,7 +9,7 @@ import javafx.scene.control.Alert;
  */
 public class DatabaseAlerts {
     public void badConnection(String whoNeedsIt){
-
+        CustomLogger.createLogMsgAndSave("Unable to connect to DB.  Opening Database Credentials Editor.", "red");
         PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt, null, null); //only if error
 
     }
@@ -20,10 +21,12 @@ public class DatabaseAlerts {
      * @param message the message to be sent
      */
     public void badConnection(String whoNeedsIt, String email, String message){
+        CustomLogger.createLogMsgAndSave("Unable to open DB for changing timestamps.  Opening Database Credentials Editor.", "red");
         PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt, email, message); //only if error
     }
 
     public void goodConnection(){
+        CustomLogger.createLogMsgAndSave("Good Connection!");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);

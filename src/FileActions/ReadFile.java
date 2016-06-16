@@ -1,7 +1,7 @@
 package FileActions;
 
-import People.Person;
-import People.PersonsArrayList;
+import PeopleModels.Person;
+import PeopleModels.PersonsArrayList;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,6 +17,9 @@ public class ReadFile {
      * @param inFile File passed from main to be read and handled
      */
     public static void readAndCreateObjects(File inFile){
+
+        CustomLogger.createLogMsgAndSave("Reading and handling file: " + inFile.toString());
+
         String line;
         ArrayList<Person> personArray = new ArrayList<>();
 
@@ -37,8 +40,7 @@ public class ReadFile {
 
 
         } catch(IOException ex) {
-            //log
-            System.out.println("Unable to read " + inFile.toString());
+            CustomLogger.createLogMsgAndSave("Error: Unable to read file " + inFile.toString());
         }
 
         PersonsArrayList.personsArray = personArray;

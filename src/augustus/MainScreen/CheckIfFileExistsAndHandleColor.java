@@ -1,5 +1,6 @@
 package augustus.MainScreen;
 
+import FileActions.CustomLogger;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 
@@ -21,11 +22,15 @@ public class CheckIfFileExistsAndHandleColor {
     public static void changeTextColorAndBtn(TextField textField, Button parseFile){
         File check = new File(textField.getText());
 
+        CustomLogger.createLogMsgAndSave("Checking for file: " + check.toString());
+
         if(check.exists() && check.isFile()){
+            CustomLogger.createLogMsgAndSave(check.toString() + "exists");
             textField.setStyle("-fx-border-color: green;" +
                     "-fx-text-fill: darkgreen;");
             parseFile.setDisable(false);
         }else{
+            CustomLogger.createLogMsgAndSave(check.toString() + " does not exist!", "red");
             textField.setStyle("-fx-border-color: red;" +
                     "-fx-text-fill: darkred;");
             parseFile.setDisable(true);

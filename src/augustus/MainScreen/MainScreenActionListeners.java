@@ -2,6 +2,7 @@ package augustus.MainScreen;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;
+import FileActions.CustomLogger;
 import Tabs.UploadDataTab;
 import Tabs.SettingsTab;
 import javafx.scene.control.Button;
@@ -16,7 +17,6 @@ import java.sql.Connection;
  * for the main landing stage.
  */
 public class MainScreenActionListeners {
-
     /**
      * Create a listener that will check if the file
      * exists every time the user enters a character.
@@ -45,12 +45,15 @@ public class MainScreenActionListeners {
      */
     public static void createChooseFileListener(Button chooseFile, Button parseFile){
         chooseFile.setOnAction(event -> {
+            CustomLogger.createLogMsgAndSave("File Chooser Opened");
+
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Choose Customer Text File");
 
             File exportClearFile = fileChooser.showOpenDialog(Main.primaryStage);
 
             if (exportClearFile != null && exportClearFile.exists()) {
+                CustomLogger.createLogMsgAndSave(exportClearFile.toString() + " chosen");
                 UploadDataTab.fileNameTextField.setText(exportClearFile.toString());
                 CheckIfFileExistsAndHandleColor.changeTextColorAndBtn(UploadDataTab.fileNameTextField, parseFile);
             }
@@ -61,9 +64,15 @@ public class MainScreenActionListeners {
 
 
     /**
-     * When the user presses the button show a database credentials
-     * screen and a confirmation screen so they can connect to the
-     * right place.
+     * This button is in charge of parsing a file
+     * and then sending the contents to the database.
+     *
+     * The button is initially disabled but as soon as
+     * a valid file is inputted or chosen the button is
+     * enabled.
+     *
+     * If no DB connection can be established a prompt
+     * will say so
      *
      * todo - fix this description
      *

@@ -1,5 +1,6 @@
 package Tabs;
 
+import FileActions.CustomLogger;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -66,6 +67,7 @@ public class SettingsTab {
         warningLabel.setStyle("-fx-text-fill: darkred");
         titleLabel.setStyle("-fx-font-weight: bold");
 
+        //CustomLogger.createLogMsgAndSave("Settings tab loaded");
 
     }
 }

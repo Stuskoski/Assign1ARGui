@@ -1,5 +1,6 @@
 package CustomAlerts;
 
+import FileActions.CustomLogger;
 import javafx.scene.control.Alert;
 
 /**
@@ -9,6 +10,7 @@ import javafx.scene.control.Alert;
  */
 public class EmailAlerts {
     public void goodSend(){
+        CustomLogger.createLogMsgAndSave("Email sent successfully");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
@@ -18,6 +20,7 @@ public class EmailAlerts {
     }
 
     public void badSend(){
+        CustomLogger.createLogMsgAndSave("Error sending Email.");
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);

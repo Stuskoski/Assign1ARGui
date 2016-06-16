@@ -2,17 +2,19 @@ package Tabs;
 
 import FileActions.CustomLogger;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-/**
- * Created by r730819 on 6/15/2016.
- */
-public class HomeTab {
-    public static Tab homeTab = new Tab();
 
-    public static void createHomeTab(){
+/**
+ * Created by r730819 on 6/16/2016.
+ */
+public class DatabaseActionsTab {
+    public static Tab databaseActionsTab = new Tab();
+
+    public static void createDatabaseActionsTab(){
         BorderPane borderPane = new BorderPane();
         GridPane gridPane = new GridPane();
         Label titleLabel = new Label("Assignment 1 Landing Page");
@@ -31,13 +33,14 @@ public class HomeTab {
         gridPane.setVgap(5);
 
         //Tab Options
-        homeTab.setText("Home");
-        homeTab.setClosable(false); //Unable to close tab
-        homeTab.setContent(borderPane);
+        databaseActionsTab.setText("Database Actions");
+        databaseActionsTab.setClosable(false); //Unable to close tab
+        databaseActionsTab.setContent(borderPane);
 
         //Added graphics for looks
         titleLabel.setStyle("-fx-font-weight: bold");
 
-        //CustomLogger.createLogMsgAndSave("Home tab loaded");
+        //CustomLogger.createLogMsgAndSave("Database tab loaded");
+
     }
 }

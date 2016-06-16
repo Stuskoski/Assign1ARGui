@@ -1,5 +1,6 @@
 package DatabaseActions;
 
+import FileActions.CustomLogger;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 import Tabs.ViewDatabaseTab;
@@ -29,23 +30,28 @@ public class DatabaseActionListeners {
                                                           TextField pass){
         confirm.setOnAction(event -> {
 
+            CustomLogger.createLogMsgAndSave("Confirm pushed");
+
             //Update the values in the settings page with the new correct ones
             SettingsTab.urlTextField.setText(url.getText());
             SettingsTab.userTextField.setText(user.getText());
             SettingsTab.passTextField.setText(pass.getText());
+
+            CustomLogger.createLogMsgAndSave("Database credentials saved.  Changes reflected in settings tab.");
 
             //Close the prompt, a new one will be created if connection fails again
             dbStage.close();
 
             //fire buttons after the new info is saved
             UploadDataTab.parseFile.fire();
+            CustomLogger.createLogMsgAndSave("Attempting to re-upload data");
 
 
         });
     }
 
     /**
-     * similar to one above just for different task
+     * similar to one above just for changing credentials for grabbing sorted data
      */
     public static void createConfirmBtnListenerGetConnectionForTexasSort(Button confirm, Stage dbStage, TextField url, TextField user,
                                                                          TextField pass){
@@ -56,17 +62,20 @@ public class DatabaseActionListeners {
             SettingsTab.userTextField.setText(user.getText());
             SettingsTab.passTextField.setText(pass.getText());
 
+            CustomLogger.createLogMsgAndSave("Database credentials saved.  Changes reflected in settings tab.");
+
             dbStage.close();
 
             //fire buttons after the new info is saved
             ViewDatabaseTab.sortTxBtn.fire();
+            CustomLogger.createLogMsgAndSave("Attempting to retrieve unsorted data again");
 
 
         });
     }
 
     /**
-     * similar to one above just for different task
+     * similar to one above just for changing credentials for grabbing unsorted data
      */
     public static void createConfirmBtnListenerGetConnectionForRefresh(Button confirm, Stage dbStage, TextField url, TextField user,
                                                                          TextField pass){
@@ -77,15 +86,23 @@ public class DatabaseActionListeners {
             SettingsTab.userTextField.setText(user.getText());
             SettingsTab.passTextField.setText(pass.getText());
 
+            CustomLogger.createLogMsgAndSave("Database credentials saved.  Changes reflected in settings tab.");
+
             dbStage.close();
 
             //fire buttons after the new info is saved
             ViewDatabaseTab.refreshBtn.fire();
 
+            CustomLogger.createLogMsgAndSave("Attempting to retrieve sorted data again");
+
 
         });
     }
 
+    /**
+     * Similar to the methods above but this is for changing
+     * database credentials for emailing
+     */
     public static void createConfirmBtnListenerGetConnectionForEmail(Button confirm, Stage dbStage, TextField url, TextField user,
                                                                      TextField pass, String email, String message){
         confirm.setOnAction(event -> {
@@ -94,17 +111,20 @@ public class DatabaseActionListeners {
             SettingsTab.userTextField.setText(user.getText());
             SettingsTab.passTextField.setText(pass.getText());
 
+            CustomLogger.createLogMsgAndSave("Database credentials saved.  Changes reflected in settings tab.");
+
             dbStage.close();
 
             //fire buttons after the new info is saved
             ModifyDatabaseMethods.updateTimeStampAfterEmail(email, message);
+            CustomLogger.createLogMsgAndSave("Attempting to update timestamps again");
         });
     }
 
     public static void createRefreshBtnListenerViewDBTab(Button refreshBtn, ScrollPane userScrollPane, Button emailBtn){
         refreshBtn.setOnAction(event -> {
             emailBtn.setText("Send Unsorted Email");
-            GetDataFromDatabaseWithEmail.getAllUsersFromDatabaseAndAddToVbox(userScrollPane, true);
+            GetDataFromDatabaseWithEmail.getAllUsersFromDatabaseAndAddToVBox(userScrollPane, true);
         });
     }
 

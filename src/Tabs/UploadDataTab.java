@@ -1,5 +1,6 @@
 package Tabs;
 
+import FileActions.CustomLogger;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -57,6 +58,8 @@ public class UploadDataTab {
         uploadDataTab.setClosable(false); //Unable to close tab
 
         uploadDataTab.setContent(gridPane);
+
+        //CustomLogger.createLogMsgAndSave("Upload Data tab loaded");
 
     }
 }

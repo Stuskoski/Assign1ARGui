@@ -1,9 +1,7 @@
 package augustus.MainScreen;
 
-import Tabs.UploadDataTab;
-import Tabs.ViewDatabaseTab;
-import Tabs.SettingsTab;
-import Tabs.HomeTab;
+import FileActions.CustomLogger;
+import Tabs.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +28,10 @@ public class Main extends Application {
         //Set primary stage to a global to be reference
         Main.primaryStage = primaryStage;
 
+        //Create the logging tab and add to TabPane
+        LoggingTab.createLoggingTab();
+        CustomLogger.createLogMsgAndSave("Assign1ARGui Started ... All Tabs Created");
+
         //Create the home tab and then add to the TabPane
         HomeTab.createHomeTab();
         tabPane.getTabs().add(HomeTab.homeTab);
@@ -41,6 +43,13 @@ public class Main extends Application {
         //Create the read database tab and add to TabPane
         ViewDatabaseTab.createViewDatabaseTab();
         tabPane.getTabs().add(ViewDatabaseTab.viewDatabaseTab);
+
+        //Create the database actions tab and add to TabPane
+        DatabaseActionsTab.createDatabaseActionsTab();
+        tabPane.getTabs().add(DatabaseActionsTab.databaseActionsTab);
+
+        //Add logging tab here for positioning
+        tabPane.getTabs().add(LoggingTab.loggingTab);
 
         //Create the settings tab and add to TabPane
         SettingsTab.createSettingsTab();
@@ -54,8 +63,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(borderPane, 475, 415));//width height
 
         primaryStage.show();
-
-    }
+}
 
 
     public static void main(String[] args) {

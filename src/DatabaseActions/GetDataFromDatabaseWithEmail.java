@@ -1,8 +1,9 @@
 package DatabaseActions;
 
 import CustomAlerts.EmailAlerts;
-import People.Person;
-import People.PersonArrayListDownloadedFromDB;
+import FileActions.CustomLogger;
+import PeopleModels.Person;
+import PeopleModels.PersonArrayListDownloadedFromDB;
 import Tabs.SettingsTab;
 import Tabs.ViewDatabaseTab;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ import java.util.Properties;
 
 /**
  * Created by r730819 on 6/15/2016.
+ * Class for all database queries and email functions
  */
 public class GetDataFromDatabaseWithEmail {
 
@@ -42,7 +44,7 @@ public class GetDataFromDatabaseWithEmail {
      * @param userScrollPane Reference to the scrollpane in the ViewDatabaseTab
      * @param selfCall Determines if the texas sort is calling or itself
      */
-    public static void getAllUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane, boolean selfCall){
+    public static void getAllUsersFromDatabaseAndAddToVBox(ScrollPane userScrollPane, boolean selfCall){
         Statement statement;
         String sqlStr;
         Connection connection;
@@ -60,6 +62,7 @@ public class GetDataFromDatabaseWithEmail {
             PersonArrayListDownloadedFromDB.arrayList.clear();
 
             try {
+                CustomLogger.createLogMsgAndSave("Pulling customers from database");
                 statement = connection.createStatement();
 
                 sqlStr = "SELECT * FROM customers;";
@@ -116,6 +119,7 @@ public class GetDataFromDatabaseWithEmail {
 
                     //Ehh just for fun
                     emailLabel.setOnMouseClicked(event -> {
+                        CustomLogger.createLogMsgAndSave("Opening native email client to email " + email_addr);
                         Desktop desktop;
                         if (Desktop.isDesktopSupported()
                                 && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
@@ -129,7 +133,7 @@ public class GetDataFromDatabaseWithEmail {
                             }
 
                         } else {
-                            //throw error
+                            CustomLogger.createLogMsgAndSave("Native email app not found to email " + email_addr);
                         }
                     });
 
@@ -161,15 +165,16 @@ public class GetDataFromDatabaseWithEmail {
                 if (!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
                     ViewDatabaseTab.emailBtn.setDisable(false);
                     ViewDatabaseTab.emailLabel.setVisible(false);
+                    CustomLogger.createLogMsgAndSave("Email button unlocked");
                 } else {
                     ViewDatabaseTab.emailBtn.setDisable(true);
                     ViewDatabaseTab.emailLabel.setVisible(true);
+                    CustomLogger.createLogMsgAndSave("Email button locked", "red");
                 }
 
 
             } catch (SQLException e) {
-                e.printStackTrace();
-                //todo add log error
+                CustomLogger.createLogMsgAndSave("SQL error in GetDataFromDBWithEmail", "red");
             }
         }
 
@@ -181,7 +186,7 @@ public class GetDataFromDatabaseWithEmail {
      */
     public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane){
 
-        getAllUsersFromDatabaseAndAddToVbox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
+        getAllUsersFromDatabaseAndAddToVBox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
 
         //If the array is not empty, proceed..else do nothing
         if(!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
@@ -200,6 +205,8 @@ public class GetDataFromDatabaseWithEmail {
             Label texasTitle = new Label("=== Texas Customers ===");
             texasTitle.setStyle("-fx-text-fill: darkred;");
             overallVbox.getChildren().add(texasTitle);
+
+            CustomLogger.createLogMsgAndSave("Sorting persons");
 
             //Add all the texas persons first
             for (Person person : tempArray) {
@@ -220,8 +227,8 @@ public class GetDataFromDatabaseWithEmail {
             PersonArrayListDownloadedFromDB.arrayList = new ArrayList<>(sortedArray);
 
             boolean firstNonTexan = true;
+            CustomLogger.createLogMsgAndSave("Creating person labels");
             for (Person person : sortedArray) {
-
                 //Determine the correct position to put the next label
                 if(!person.state.toLowerCase().equals("tx")){
                     if(firstNonTexan){
@@ -259,7 +266,7 @@ public class GetDataFromDatabaseWithEmail {
                         }
 
                     } else {
-                        //throw error
+                        CustomLogger.createLogMsgAndSave("Native email client not found", "red");
                     }
                 });
 
@@ -294,6 +301,8 @@ public class GetDataFromDatabaseWithEmail {
     public static void sendListViaEmail(String toSortOrNotToSort){
         //getAllSortedUsersFromDatabaseAndAddToVbox(userScrollPane, false); ---No longer sort before, option to send unsorted
 
+        CustomLogger.createLogMsgAndSave("Prompting for email address");
+
         TextInputDialog dialog = new TextInputDialog("user@domain.com");
         dialog.setTitle("Email Prompt");
         dialog.setHeaderText("Email Sorted List");
@@ -320,6 +329,7 @@ public class GetDataFromDatabaseWithEmail {
     private static void createEmail(String email, boolean sortEmail){
         //send a sorted email
         if(sortEmail){
+            CustomLogger.createLogMsgAndSave("Creating sorted email to be sent");
             String emailMsg = "=== Texas Customers ===\n\n";
             boolean firstNonTexan = true;
 
@@ -355,6 +365,8 @@ public class GetDataFromDatabaseWithEmail {
 
             //Send a unsorted email
         }else {
+            CustomLogger.createLogMsgAndSave("Creating unsorted email to be sent");
+
             String emailMsg = "=== Customer List ===\n\n";
 
             //Go through all the persons and create the email from it
@@ -381,7 +393,17 @@ public class GetDataFromDatabaseWithEmail {
         }
     }
 
+    /**
+     * Method uses the Javax library to compile
+     * a MimeMessage and send it to the user specified
+     * in toEmail
+     *
+     * @param toEmail Email Address to send to
+     * @param message Message to send
+     */
     private static void sendJavaxEmail(String toEmail, String message){
+
+        CustomLogger.createLogMsgAndSave("Sending email...");
 
         // Sender's email ID needs to be mentioned
         String from = "Rutkoski.Augustus@heb.com";
@@ -421,7 +443,12 @@ public class GetDataFromDatabaseWithEmail {
         }catch (MessagingException mex) {
             EmailAlerts alerts = new EmailAlerts();
             alerts.badSend();
-            //send bad log
+            CustomLogger.createLogMsgAndSave("Unable to send email.  Check the following credentials: \n" +
+                    "From: Rutkoski.Augustus@heb.com\n" +
+                    "To: " + from + "\n" +
+                    "Host: " + host + "\n" +
+                    "Port: Default(25)", "red");
+
         }
     }
 }

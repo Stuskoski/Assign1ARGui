@@ -1,8 +1,9 @@
 package DatabaseActions;
 
+import FileActions.CustomLogger;
 import FileActions.ReadFile;
-import People.Person;
-import People.PersonsArrayList;
+import PeopleModels.Person;
+import PeopleModels.PersonsArrayList;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 
@@ -31,6 +32,7 @@ public class ModifyDatabaseMethods {
                 SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText(), "email", email, message);//null null
 
         if(connection!=null){
+            CustomLogger.createLogMsgAndSave("Attempting to update email timestamps");
             try {
                 statement = connection.createStatement();
 
@@ -40,8 +42,7 @@ public class ModifyDatabaseMethods {
                 statement.executeUpdate(sqlStr);
 
             } catch (SQLException e) {
-                e.printStackTrace();
-                //todo add log error
+                CustomLogger.createLogMsgAndSave("Unable to update email timestamps", "red");
             }
         }
 
@@ -56,26 +57,28 @@ public class ModifyDatabaseMethods {
      * are present for each user.
      */
     public static void attemptUploadData(Connection connection){
-        Statement statement;
-        String sqlStr;
+        if(connection!=null){
+            CustomLogger.createLogMsgAndSave("Attempting to upload data from file to database");
 
-        ReadFile.readAndCreateObjects(new File(UploadDataTab.fileNameTextField.getText()));
+            Statement statement;
+            String sqlStr;
 
+            ReadFile.readAndCreateObjects(new File(UploadDataTab.fileNameTextField.getText()));
 
-        for (Person person : PersonsArrayList.personsArray){
-            try {
-                statement = connection.createStatement();
+            for (Person person : PersonsArrayList.personsArray){
+                try {
+                    statement = connection.createStatement();
 
-                sqlStr = "INSERT INTO customers(last_name, first_name, email_addr, home_addr, city, state, zip_code)" +
-                         "VALUES ('"+ person.lastName + "','" + person.firstName + "','" + person.emailAddr + "','" +
-                          person.homeAddr + "','" + person.city + "','" + person.state + "','" + person.zipCode +
-                          "');";
+                    sqlStr = "INSERT INTO customers(last_name, first_name, email_addr, home_addr, city, state, zip_code)" +
+                            "VALUES ('"+ person.lastName + "','" + person.firstName + "','" + person.emailAddr + "','" +
+                            person.homeAddr + "','" + person.city + "','" + person.state + "','" + person.zipCode +
+                            "');";
 
-                statement.executeUpdate(sqlStr);
+                    statement.executeUpdate(sqlStr);
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-                //todo add log error
+                } catch (SQLException e) {
+                    CustomLogger.createLogMsgAndSave("Error inserting data", "red");
+                }
             }
         }
     }

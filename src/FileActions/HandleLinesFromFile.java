@@ -1,6 +1,6 @@
 package FileActions;
 
-import People.Person;
+import PeopleModels.Person;
 
 import java.util.ArrayList;
 
@@ -43,9 +43,10 @@ public class HandleLinesFromFile {
      *                    multiple users.
      */
     public static void createUserAndAddToArray(String personDetails[], ArrayList<Person> personArray){
+
         if(personDetails.length != 7){
+            CustomLogger.createLogMsgAndSave("Error: Incorrect number of details for person in file", "red");
             return;
-            //todo write log
         }
 
         Person person = new Person();

@@ -2,12 +2,11 @@ package DatabaseActions;
 
 import CustomAlerts.DatabaseAlerts;
 import CustomAlerts.EmailAlerts;
-import javafx.scene.control.Alert;
+import FileActions.CustomLogger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 
 public class GetDatabaseConnection {
@@ -20,6 +19,7 @@ public class GetDatabaseConnection {
      * data or just grab a connection for looking at the DB
      */
     public static Connection getDB(String url, String user, String password, String whoNeedsIt){
+        CustomLogger.createLogMsgAndSave("Attempting database connection");
         Connection conn1 = null;
         DatabaseAlerts alerts = new DatabaseAlerts();
 
@@ -45,15 +45,16 @@ public class GetDatabaseConnection {
      * the email method since an email and
      * a message is sent with it.
      *
-     * @param url
-     * @param user
-     * @param password
-     * @param whoNeedsIt
-     * @param email
-     * @param message
+     * @param url Url connection string
+     * @param user User name for DB
+     * @param password Password for DB
+     * @param whoNeedsIt Who needs the database connection.  Used for custom handling.
+     * @param email Email to sent to just in case for email method
+     * @param message Message to be sent just in case for email method
      * @return
      */
     public static Connection getDBForEmail(String url, String user, String password, String whoNeedsIt, String email, String message){
+        CustomLogger.createLogMsgAndSave("Attempting database connection");
         Connection conn1 = null;
         DatabaseAlerts alerts = new DatabaseAlerts();
         EmailAlerts emailAlerts = new EmailAlerts();
