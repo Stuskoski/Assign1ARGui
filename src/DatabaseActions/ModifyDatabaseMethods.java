@@ -4,13 +4,13 @@ import FileActions.CustomLogger;
 import FileActions.ReadFile;
 import PeopleModels.Person;
 import PeopleModels.PersonsArrayList;
+import Tabs.HomeTab;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,7 +55,7 @@ public class ModifyDatabaseMethods {
      * Send file to a method that will
      * parse the file and create
      * Person objects.  The method returns
-     * an Arraylist containing all the objects
+     * an ArrayList containing all the objects
      * created from the file.  Ensures all 7 details
      * are present for each user.
      */
@@ -80,6 +80,7 @@ public class ModifyDatabaseMethods {
                     statement.executeUpdate(sqlStr);
 
                 } catch (SQLException e) {
+                    System.out.println(e.toString());
                     CustomLogger.createLogMsgAndSave("Error inserting data", "red");
                 }
             }
@@ -109,14 +110,36 @@ public class ModifyDatabaseMethods {
             try {
                 switch (action){
                     case "make":
-                        process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
-                                "-p" + SettingsTab.passTextField.getText(), "-e", "\"source C:\\Users\\r730819\\Desktop\\assign1_db_customers.sql\""} );
+                        URL url = ModifyDatabaseMethods.class.getClassLoader().getResource("assign1_db_augustus_customers.sql");
+                        String urlString;
+                        String find = "C:";
+                        if(url!=null){
+                            urlString = url.getFile();
+                            urlString = urlString.substring(urlString.indexOf(find));
+
+                            urlString = urlString.replaceAll("!", "");
+                            urlString = urlString.replaceAll("/", "\\\\");
+
+
+                           // urlString = urlString.replaceAll("Assign1ARGui", "Assign1ARGui.jar");
+
+                            CustomLogger.createLogMsgAndSave("Pulling resource: " + urlString);
+
+                           // Files.move(new File(urlString).toPath(), new File(urlString+"../").toPath());
+
+
+                            CustomLogger.createLogMsgAndSave("Creating database(assign1_db_augustus)");
+                            process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
+                                    "-p" + SettingsTab.passTextField.getText(), "-e", "source " + urlString} );
+                        }
                         break;
                     case "clear":
+                        CustomLogger.createLogMsgAndSave("Truncating database table (customers)");
                         process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
-                                "-p" + SettingsTab.passTextField.getText(), "-e", "DROP DATABASE `assign1_db_augustus`;"} );
+                                "-p" + SettingsTab.passTextField.getText(), "-e", "TRUNCATE `assign1_db_augustus`.`customers`;"} );
                         break;
                     case "delete":
+                        CustomLogger.createLogMsgAndSave("Delete database (assign1_db_augustus)");
                         process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
                                 "-p" + SettingsTab.passTextField.getText(), "-e", "DROP DATABASE `assign1_db_augustus`;"} );
                         break;
@@ -162,6 +185,7 @@ public class ModifyDatabaseMethods {
         if(process!=null){
             try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 retFile = new File(in.readLine());
+                CustomLogger.createLogMsgAndSave("MySQL executable found at " + retFile.toString());
             } catch (IOException e) {
                 CustomLogger.createLogMsgAndSave("Unable to locate MySQL executable", "red");
             }
