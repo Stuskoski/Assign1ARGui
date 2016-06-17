@@ -13,11 +13,12 @@ import java.io.File;
 
 public class Main extends Application {
     public static Stage primaryStage;
+    public static TabPane tabPane;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane borderPane = new BorderPane();
-        TabPane tabPane = new TabPane();
+        tabPane = new TabPane();
         VBox topContainer = new VBox(tabPane);  //Creates a container to hold all Menu Objects.
 
         //Set the overall layout
