@@ -109,6 +109,7 @@ public class ModifyDatabaseMethods {
         if(mySqlPath!=null){
             try {
                 switch (action){
+                    //function to get the text file out of the jar and use the temp file.  Bad work around
                     case "make":
                         URL url = ModifyDatabaseMethods.class.getClassLoader().getResource("assign1_db_augustus_customers.sql");
                         String urlString;
@@ -120,17 +121,31 @@ public class ModifyDatabaseMethods {
                             urlString = urlString.replaceAll("!", "");
                             urlString = urlString.replaceAll("/", "\\\\");
 
+                            String newLocation = urlString.substring(0, urlString.lastIndexOf("\\"));
+
+                            InputStream in = ModifyDatabaseMethods.class.getClassLoader().getResourceAsStream("assign1_db_augustus_customers.sql");
+                            BufferedReader input = new BufferedReader(new InputStreamReader(in));
+                            File tempFile = new File("temp-augustus.sql");
+                            BufferedWriter output = new BufferedWriter(new FileWriter(tempFile));
+
+                            String fileLine;
+                            while((fileLine = input.readLine())!=null){
+                                output.write(fileLine+"\n");
+                            }
+
+                            output.close();
+
 
                            // urlString = urlString.replaceAll("Assign1ARGui", "Assign1ARGui.jar");
 
-                            CustomLogger.createLogMsgAndSave("Pulling resource: " + urlString);
+                            CustomLogger.createLogMsgAndSave("Pulling resource: " + tempFile.toString());
 
                            // Files.move(new File(urlString).toPath(), new File(urlString+"../").toPath());
 
 
                             CustomLogger.createLogMsgAndSave("Creating database(assign1_db_augustus)");
                             process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
-                                    "-p" + SettingsTab.passTextField.getText(), "-e", "source " + urlString} );
+                                    "-p" + SettingsTab.passTextField.getText(), "-e", "source " + tempFile.toString()} );
                         }
                         break;
                     case "clear":
