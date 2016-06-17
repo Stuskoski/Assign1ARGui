@@ -14,6 +14,19 @@ import javafx.scene.layout.VBox;
 
 /**
  * Created by r730819 on 6/15/2016.
+ *
+ * View Database Tab is used to view the
+ * contents of the database.  The user
+ * can either view the customers in a
+ * sequential order or order by texans
+ * and non texans.
+ *
+ * The email button is originally
+ * locked with the user having to
+ * load in data with the 2 prior
+ * buttons.  The button changes to
+ * send sorted/unsorted mail depending
+ * on which data the user wants.
  */
 public class ViewDatabaseTab {
     public static Tab viewDatabaseTab = new Tab();
@@ -78,7 +91,7 @@ public class ViewDatabaseTab {
         emailLabel.setStyle("-fx-text-fill: darkred;");
         customerTitleLabel.setStyle("-fx-font-weight: bold");
 
-       // CustomLogger.createLogMsgAndSave("View database tab loaded");
+        CustomLogger.createLogMsgAndSave("View database tab loaded");
 
     }
 }

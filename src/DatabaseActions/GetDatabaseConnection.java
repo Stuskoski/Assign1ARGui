@@ -30,7 +30,8 @@ public class GetDatabaseConnection {
         }
 
         if (conn1 != null) {
-            alerts.goodConnection();
+            CustomLogger.createLogMsgAndSave("Connection established");
+            //alerts.goodConnection(); leave out for now
         }else{
             alerts.badConnection(whoNeedsIt);
         }

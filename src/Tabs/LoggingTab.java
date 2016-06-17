@@ -1,17 +1,21 @@
 package Tabs;
 
-import FileActions.CustomLogger;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
  * Created by r730819 on 6/16/2016.
+ * Logging page UI that displays all
+ * the logging labels created in Custom
+ * Logger. The tab is static and unable
+ * to be closed
  */
 public class LoggingTab {
     public static Tab loggingTab = new Tab();
@@ -23,7 +27,7 @@ public class LoggingTab {
         HBox titleHbox = new HBox(titleLabel);
         ScrollPane scrollPane = new ScrollPane();
 
-        //titleHbox options
+        //HBox options
         titleHbox.setAlignment(Pos.CENTER);
 
         //BorderPane Options
@@ -45,7 +49,7 @@ public class LoggingTab {
         //Added graphics for looks
         titleLabel.setStyle("-fx-font-weight: bold");
 
-       // CustomLogger.createLogMsgAndSave("Logging tab loaded");
+        //CustomLogger.createLogMsgAndSave("Logging tab loaded");
 
     }
 }

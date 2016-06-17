@@ -11,6 +11,16 @@ import javafx.scene.layout.HBox;
 
 /**
  * Created by r730819 on 6/15/2016.
+ *
+ * Settings tab for the user.  This
+ * tab holds the credentials and the
+ * URL connection string for the database.
+ *
+ * Every time a connection is attempted, the
+ * credentials are pulled from the 3 TextFields.
+ * If the program is unable to make a connection
+ * the program prompts the user to edit the
+ * connection parameters.
  */
 public class SettingsTab {
     public static Tab settingsTab = new Tab();
@@ -67,7 +77,7 @@ public class SettingsTab {
         warningLabel.setStyle("-fx-text-fill: darkred");
         titleLabel.setStyle("-fx-font-weight: bold");
 
-        //CustomLogger.createLogMsgAndSave("Settings tab loaded");
+        CustomLogger.createLogMsgAndSave("Settings tab loaded");
 
     }
 }

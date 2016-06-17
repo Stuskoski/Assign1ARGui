@@ -43,7 +43,7 @@ public class ReadFile {
             CustomLogger.createLogMsgAndSave("Error: Unable to read file " + inFile.toString());
         }
 
-        PersonsArrayList.personsArray = personArray;
+        PersonsArrayList.personsArray = new ArrayList<>(personArray);
 
     }
 }

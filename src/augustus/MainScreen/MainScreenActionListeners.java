@@ -2,6 +2,7 @@ package augustus.MainScreen;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;
+import FileActions.CheckIfFileExistsAndHandleColor;
 import FileActions.CustomLogger;
 import Tabs.UploadDataTab;
 import Tabs.SettingsTab;

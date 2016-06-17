@@ -7,7 +7,10 @@ import PeopleModels.PersonsArrayList;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -81,5 +84,88 @@ public class ModifyDatabaseMethods {
                 }
             }
         }
+    }
+
+
+    /**
+     * Combined 3 methods into one that takes a string
+     * as an action to either make, clear(truncate), or
+     * delete(drop) the database.
+     *
+     * @param action Received from DatabaseActions.DatabaseActionListeners
+     *               and is either "make", "clear", "delete" to specify
+     *               which action to take.
+     */
+    public static void makeClearDeleteDB(String action){
+        File mySqlPath;
+        Process process = null;
+
+        CustomLogger.createLogMsgAndSave("Attempting to alter database");
+
+        //Find the MySQL path. Restricted to windows only currently
+        mySqlPath = findMySQLExec();
+
+        if(mySqlPath!=null){
+            try {
+                switch (action){
+                    case "make":
+                        process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
+                                "-p" + SettingsTab.passTextField.getText(), "-e", "\"source C:\\Users\\r730819\\Desktop\\assign1_db_customers.sql\""} );
+                        break;
+                    case "clear":
+                        process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
+                                "-p" + SettingsTab.passTextField.getText(), "-e", "DROP DATABASE `assign1_db_augustus`;"} );
+                        break;
+                    case "delete":
+                        process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
+                                "-p" + SettingsTab.passTextField.getText(), "-e", "DROP DATABASE `assign1_db_augustus`;"} );
+                        break;
+                }
+
+                if(process !=null){
+                    try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                        while(in.readLine()!=null)
+                            System.out.println(in.readLine());
+                    } catch (IOException e) {
+                        CustomLogger.createLogMsgAndSave("Unable to locate MySQL executable", "red");
+                    }
+
+                    CustomLogger.createLogMsgAndSave("Database altered successfully");
+                }
+
+            } catch (IOException e) {
+                CustomLogger.createLogMsgAndSave("Unable to execute " + mySqlPath.toString(), "red");
+            }
+        }
+    }
+
+    /**
+     * Searches in program files for the correct
+     * extension to the mysql executable.
+     *
+     * @return the executable mysql file
+     */
+    private static File findMySQLExec(){
+        File retFile = null;
+        Process process = null;
+
+        CustomLogger.createLogMsgAndSave("Looking for mysql.exe in Program Files");
+
+        //windows cmd to search for the mysql executable. todo - consider handling other OS
+        try {
+            process = Runtime.getRuntime().exec("where /R \"C:\\Program Files\" mysql.exe");
+        } catch (IOException e) {
+            CustomLogger.createLogMsgAndSave("Unable to locate MySQL executable", "red");
+        }
+
+        //Create a new file based off the path returned and return that file
+        if(process!=null){
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                retFile = new File(in.readLine());
+            } catch (IOException e) {
+                CustomLogger.createLogMsgAndSave("Unable to locate MySQL executable", "red");
+            }
+        }
+        return retFile;
     }
 }

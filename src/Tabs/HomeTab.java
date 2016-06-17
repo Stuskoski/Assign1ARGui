@@ -8,6 +8,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 /**
  * Created by r730819 on 6/15/2016.
+ * Home tab or the help landing page.
+ * This is the first tab the user
+ * sees when the program opens.
+ *
+ * It is basically a readme but in
+ * the gui instead of a seperate
+ * text file
  */
 public class HomeTab {
     public static Tab homeTab = new Tab();
@@ -38,6 +45,6 @@ public class HomeTab {
         //Added graphics for looks
         titleLabel.setStyle("-fx-font-weight: bold");
 
-        //CustomLogger.createLogMsgAndSave("Home tab loaded");
+        CustomLogger.createLogMsgAndSave("Home tab loaded");
     }
 }

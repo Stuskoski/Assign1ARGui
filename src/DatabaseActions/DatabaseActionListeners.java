@@ -138,4 +138,18 @@ public class DatabaseActionListeners {
     public static void createEmailBtnListenerViewDBTab(Button emailBtn){
         emailBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.sendListViaEmail(emailBtn.getText()));
     }
+
+
+    // Start action listeners for DatabaseActionsTab
+    public static void createMakeDBBtnListener(Button makeDB){
+        makeDB.setOnAction(event -> ModifyDatabaseMethods.makeClearDeleteDB("make"));
+    }
+    public static void createClearDBBtnListener(Button clearDB){
+        clearDB.setOnAction(event -> ModifyDatabaseMethods.makeClearDeleteDB("clear"));
+    }
+    public static void createDeleteDBBtnListener(Button deleteDB){
+        deleteDB.setOnAction(event -> ModifyDatabaseMethods.makeClearDeleteDB("delete"));
+    }
+    // End action listeners for DatabaseActionsTab
+
 }

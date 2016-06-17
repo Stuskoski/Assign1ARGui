@@ -1,9 +1,7 @@
-package augustus.MainScreen;
+package FileActions;
 
-import FileActions.CustomLogger;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-
 import java.io.File;
 
 /**

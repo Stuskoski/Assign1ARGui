@@ -59,7 +59,7 @@ public class GetDataFromDatabaseWithEmail {
         if(connection!=null) {
 
             //Clear persons array before reloading it just in case
-            PersonArrayListDownloadedFromDB.arrayList.clear();
+            PersonArrayListDownloadedFromDB.downloadedArrayList.clear();
 
             try {
                 CustomLogger.createLogMsgAndSave("Pulling customers from database");
@@ -104,7 +104,7 @@ public class GetDataFromDatabaseWithEmail {
                     person.timeStamp = time_stamp;
                     person.customerNum = counter;
 
-                    PersonArrayListDownloadedFromDB.arrayList.add(person);
+                    PersonArrayListDownloadedFromDB.downloadedArrayList.add(person);
 
                     //Create labels and add to the vbox, I can do this in another method but for now do it here...
                     Label customerNumLabel = new Label("Customer #" + counter);
@@ -162,7 +162,7 @@ public class GetDataFromDatabaseWithEmail {
                 userScrollPane.setContent(overallVbox);
 
                 //If at least one person was pulled from db, unlock the email button
-                if (!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
+                if (!PersonArrayListDownloadedFromDB.downloadedArrayList.isEmpty()) {
                     ViewDatabaseTab.emailBtn.setDisable(false);
                     ViewDatabaseTab.emailLabel.setVisible(false);
                     CustomLogger.createLogMsgAndSave("Email button unlocked");
@@ -189,7 +189,7 @@ public class GetDataFromDatabaseWithEmail {
         getAllUsersFromDatabaseAndAddToVBox(userScrollPane, false);//call the function above to load the PersonArrayListDownloaded.
 
         //If the array is not empty, proceed..else do nothing
-        if(!PersonArrayListDownloadedFromDB.arrayList.isEmpty()) {
+        if(!PersonArrayListDownloadedFromDB.downloadedArrayList.isEmpty()) {
 
             //Create vbox that holds all the vbox's created below
             VBox overallVbox = new VBox(20);
@@ -198,7 +198,7 @@ public class GetDataFromDatabaseWithEmail {
             ArrayList<Person> sortedArray;
             ArrayList<Person> tempArray;
 
-            tempArray = new ArrayList<>(PersonArrayListDownloadedFromDB.arrayList); //copy over the array
+            tempArray = new ArrayList<>(PersonArrayListDownloadedFromDB.downloadedArrayList); //copy over the array
             sortedArray = new ArrayList<>();
 
             //Add texas title to vbox for display and color red for visibility
@@ -224,7 +224,7 @@ public class GetDataFromDatabaseWithEmail {
             }
 
             //Make the static array sorted
-            PersonArrayListDownloadedFromDB.arrayList = new ArrayList<>(sortedArray);
+            PersonArrayListDownloadedFromDB.downloadedArrayList = new ArrayList<>(sortedArray);
 
             boolean firstNonTexan = true;
             CustomLogger.createLogMsgAndSave("Creating person labels");
@@ -334,7 +334,7 @@ public class GetDataFromDatabaseWithEmail {
             boolean firstNonTexan = true;
 
             //Go through all the persons and create the email from it
-            for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
+            for (Person person : PersonArrayListDownloadedFromDB.downloadedArrayList) {
                 String personString = "";
 
                 //Determine when there are no more Texas Persons
@@ -370,7 +370,7 @@ public class GetDataFromDatabaseWithEmail {
             String emailMsg = "=== Customer List ===\n\n";
 
             //Go through all the persons and create the email from it
-            for (Person person : PersonArrayListDownloadedFromDB.arrayList) {
+            for (Person person : PersonArrayListDownloadedFromDB.downloadedArrayList) {
                 String personString = "";
 
                 //Create strings to be sent in the email

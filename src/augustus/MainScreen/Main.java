@@ -11,10 +11,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     public static Stage primaryStage;
-    private static Tab homeTab;
-    private static Tab importDataTab;
-    private static Tab sendEmailTab;
-    private static Tab viewDBTab;
 
     @Override
     public void start(Stage primaryStage) throws Exception{

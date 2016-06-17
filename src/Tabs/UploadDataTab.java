@@ -4,11 +4,24 @@ import FileActions.CustomLogger;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import augustus.MainScreen.CheckIfFileExistsAndHandleColor;
+import FileActions.CheckIfFileExistsAndHandleColor;
 import augustus.MainScreen.MainScreenActionListeners;
 
 /**
  * Created by r730819 on 6/15/2016.
+ *
+ * Upload data tab is the tab used by the
+ * user to load a csv file into the database.
+ *
+ * The user is prompted by a gui to select a file
+ * with a file chooser or type in a valid
+ * file path for the file to be uploaded.
+ *
+ * There are file checks to see if the
+ * file exists and is a valid file not
+ * a directory.
+ *
+ * todo look into csv file checking
  */
 public class UploadDataTab {
     public static TextField fileNameTextField; //static reference for filename to use across stages
@@ -33,6 +46,7 @@ public class UploadDataTab {
 
         //Textfield options
         fileNameTextField.setPromptText("Enter Valid File Path");
+        fileNameTextField.setPrefWidth(300);
 
         //Create listeners
         MainScreenActionListeners.createTextFieldListener(parseFile);
@@ -59,7 +73,7 @@ public class UploadDataTab {
 
         uploadDataTab.setContent(gridPane);
 
-        //CustomLogger.createLogMsgAndSave("Upload Data tab loaded");
+        CustomLogger.createLogMsgAndSave("Upload Data tab loaded");
 
     }
 }

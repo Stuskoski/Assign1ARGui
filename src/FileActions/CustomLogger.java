@@ -9,6 +9,10 @@ import java.util.Date;
 
 /**
  * Created by r730819 on 6/16/2016.
+ *
+ * Logger class used to write to an
+ * external log, an internal log, and
+ * the console.
  */
 public class CustomLogger {
     private static Logger logger = (Logger) LogManager.getLogger();
@@ -17,7 +21,7 @@ public class CustomLogger {
      * Logs the date and msg to the console, file,
      * and the logging page.  This options gives color
      * options if needed
-     * @param msg
+     * @param msg msg to be logged
      */
     public static void createLogMsgAndSave(String msg, String color){
         Date date = new Date();
@@ -29,15 +33,9 @@ public class CustomLogger {
                 LoggingTab.loggingVbox.getChildren().add(logLabel);
                 break;
             }
-            case "blue": {
+            case "green": {
                 Label logLabel = new Label(date.toString() + ": " + msg);
-                logLabel.setStyle("-fx-text-fill: blue;");
-                LoggingTab.loggingVbox.getChildren().add(logLabel);
-                break;
-            }
-            case "yellow": {
-                Label logLabel = new Label(date.toString() + ": " + msg);
-                logLabel.setStyle("-fx-text-fill: yellow;");
+                logLabel.setStyle("-fx-text-fill: green;");
                 LoggingTab.loggingVbox.getChildren().add(logLabel);
                 break;
             }
@@ -53,7 +51,7 @@ public class CustomLogger {
 
     /**
      * Logs but with no color so default is black
-     * @param msg
+     * @param msg msg to be logged
      */
     public static void createLogMsgAndSave(String msg){
         Date date = new Date();
