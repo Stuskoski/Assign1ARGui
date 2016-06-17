@@ -111,42 +111,32 @@ public class ModifyDatabaseMethods {
                 switch (action){
                     //function to get the text file out of the jar and use the temp file.  Bad work around
                     case "make":
-                        URL url = ModifyDatabaseMethods.class.getClassLoader().getResource("assign1_db_augustus_customers.sql");
-                        String urlString;
-                        String find = "C:";
-                        if(url!=null){
-                            urlString = url.getFile();
-                            urlString = urlString.substring(urlString.indexOf(find));
+                        //get the resource from jar
+                        InputStream in = ModifyDatabaseMethods.class.getClassLoader().getResourceAsStream("assign1_db_augustus_customers.sql");
 
-                            urlString = urlString.replaceAll("!", "");
-                            urlString = urlString.replaceAll("/", "\\\\");
+                        //Create reader from that resource
+                        BufferedReader input = new BufferedReader(new InputStreamReader(in));
 
-                            String newLocation = urlString.substring(0, urlString.lastIndexOf("\\"));
+                        //Prepare a new file to be written at jar directory
+                        File tempFile = new File("temp-augustus.sql");
 
-                            InputStream in = ModifyDatabaseMethods.class.getClassLoader().getResourceAsStream("assign1_db_augustus_customers.sql");
-                            BufferedReader input = new BufferedReader(new InputStreamReader(in));
-                            File tempFile = new File("temp-augustus.sql");
-                            BufferedWriter output = new BufferedWriter(new FileWriter(tempFile));
+                        //Create write to create new file
+                        BufferedWriter output = new BufferedWriter(new FileWriter(tempFile));
 
-                            String fileLine;
-                            while((fileLine = input.readLine())!=null){
-                                output.write(fileLine+"\n");
-                            }
-
-                            output.close();
-
-
-                           // urlString = urlString.replaceAll("Assign1ARGui", "Assign1ARGui.jar");
-
-                            CustomLogger.createLogMsgAndSave("Pulling resource: " + tempFile.toString());
-
-                           // Files.move(new File(urlString).toPath(), new File(urlString+"../").toPath());
-
-
-                            CustomLogger.createLogMsgAndSave("Creating database(assign1_db_augustus)");
-                            process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
-                                    "-p" + SettingsTab.passTextField.getText(), "-e", "source " + tempFile.toString()} );
+                        //Reader to writer loop
+                        String fileLine;
+                        while((fileLine = input.readLine())!=null){
+                            output.write(fileLine+"\n");
                         }
+
+                        //always close
+                        output.close();
+
+                        CustomLogger.createLogMsgAndSave("Pulling resource: " + tempFile.toString());
+
+                        CustomLogger.createLogMsgAndSave("Creating database(assign1_db_augustus)");
+                        process = Runtime.getRuntime().exec(  new String [] {mySqlPath.toString(), "-u", SettingsTab.userTextField.getText(),
+                                "-p" + SettingsTab.passTextField.getText(), "-e", "source " + tempFile.toString()} );
                         break;
                     case "clear":
                         CustomLogger.createLogMsgAndSave("Truncating database table (customers)");

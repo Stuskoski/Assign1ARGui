@@ -9,6 +9,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Main extends Application {
     public static Stage primaryStage;
 
@@ -52,7 +54,13 @@ public class Main extends Application {
         tabPane.getTabs().add(SettingsTab.settingsTab);
 
 
-        //Create the sql tab and add to TabPane
+        //remove temp files if closed
+        primaryStage.setOnCloseRequest(event -> {
+            File temp = new File("temp-augustus.sql");
+            if(temp.exists()){
+                temp.delete();
+            }
+        });
 
         //Stage options passed from main
         primaryStage.setTitle("Assignment 1");

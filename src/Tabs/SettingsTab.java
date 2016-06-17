@@ -25,8 +25,8 @@ import javafx.scene.layout.HBox;
 public class SettingsTab {
     public static Tab settingsTab = new Tab();
     public static TextField urlTextField = new TextField("jdbc:mysql://localhost:3306/assign1_db_augustus");
-    public static TextField userTextField = new TextField("augustus");
-    public static TextField passTextField = new TextField("mypass123");
+    public static TextField userTextField = new TextField("");
+    public static TextField passTextField = new TextField("");
 
 
     public static void createSettingsTab(){
@@ -35,7 +35,7 @@ public class SettingsTab {
         Label urlLabel = new Label("URL:");
         Label userLabel = new Label("User:");
         Label passLabel = new Label("Password:");
-        Label warningLabel = new Label("* Values Prefilled With Script Credentials *");
+        Label warningLabel = new Label("* URL Prefilled With Script DB *");
         HBox titleHbox = new HBox(titleLabel);
         BorderPane borderPane = new BorderPane();
 
