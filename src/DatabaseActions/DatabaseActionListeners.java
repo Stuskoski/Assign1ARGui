@@ -1,6 +1,7 @@
 package DatabaseActions;
 
 import FileActions.CustomLogger;
+import Tabs.DatabaseActionsTab;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 import Tabs.ViewDatabaseTab;
@@ -104,7 +105,7 @@ public class DatabaseActionListeners {
      * database credentials for emailing
      */
     public static void createConfirmBtnListenerGetConnectionForEmail(Button confirm, Stage dbStage, TextField url, TextField user,
-                                                                     TextField pass, String email, String message){
+                                                                     TextField pass){
         confirm.setOnAction(event -> {
             //Update the values in the settings page with the new correct ones
             SettingsTab.urlTextField.setText(url.getText());
@@ -116,18 +117,26 @@ public class DatabaseActionListeners {
             dbStage.close();
 
             //fire buttons after the new info is saved
-            ModifyDatabaseMethods.updateTimeStampAfterEmail(email, message);
+            ModifyDatabaseMethods.updateTimeStampAfterEmail();
             CustomLogger.createLogMsgAndSave("Attempting to update timestamps again");
         });
     }
 
-    public static void createRefreshBtnListenerViewDBTab(Button refreshBtn, ScrollPane userScrollPane, Button emailBtn){
-        refreshBtn.setOnAction(event -> {
+    /**
+     * Creates an action listener for the Load Data button on
+     * the View Database Tab.  Changes the text for email button.
+     */
+    public static void createRefreshBtnListenerViewDBTab(Button loadDataBtn, ScrollPane userScrollPane, Button emailBtn){
+        loadDataBtn.setOnAction(event -> {
             emailBtn.setText("Send Unsorted Email");
             GetDataFromDatabaseWithEmail.getAllUsersFromDatabaseAndAddToVBox(userScrollPane, true);
         });
     }
 
+    /**
+     * Creates an action listener for the Texas Sort button on
+     * the View Database Tab.  Changes the text for email button.
+     */
     public static void createSortTxBtnListenerViewDBTab(Button sortTxBtn, ScrollPane userScrollPane, Button emailBtn){
         sortTxBtn.setOnAction(event -> {
             emailBtn.setText("Send Sorted Email");
@@ -135,12 +144,19 @@ public class DatabaseActionListeners {
         });
     }
 
+    /**
+     * Creates an action listener for the Email button on
+     * the View Database Tab.
+     */
     public static void createEmailBtnListenerViewDBTab(Button emailBtn){
         emailBtn.setOnAction(event -> GetDataFromDatabaseWithEmail.sendListViaEmail(emailBtn.getText()));
     }
 
 
-    // Start action listeners for DatabaseActionsTab
+    /**
+     * Start Action Listeners for the Database Actions
+     * Tab buttons
+     */
     public static void createMakeDBBtnListener(Button makeDB){
         makeDB.setOnAction(event -> ModifyDatabaseMethods.makeClearDeleteDB("make"));
     }
@@ -149,6 +165,33 @@ public class DatabaseActionListeners {
     }
     public static void createDeleteDBBtnListener(Button deleteDB){
         deleteDB.setOnAction(event -> ModifyDatabaseMethods.makeClearDeleteDB("delete"));
+    }
+
+    //Disable the database action buttons if any of the settings fields are empty since unable to check credentials with cmd executables
+    public static void createDatabaseActionTabListener(Tab tab){
+        tab.setOnSelectionChanged(event -> {
+
+
+            if(SettingsTab.urlTextField.getText().equals("") || SettingsTab.userTextField.getText().equals("") ||
+                    SettingsTab.passTextField.getText().equals("")){
+                        DatabaseActionsTab.makeDBBtn.setDisable(true);
+                        DatabaseActionsTab.clearDBBtn.setDisable(true);
+                        DatabaseActionsTab.deleteDBBtn.setDisable(true);
+                        DatabaseActionsTab.buttonsDisabledLabel.setVisible(true);
+                        DatabaseActionsTab.buttonsDisabledLabel.setManaged(true);
+                        CustomLogger.createLogMsgAndSave("Database Actions Disabled", "red"); //todo log msg comes out twice since enter/exit is an event
+            }
+
+            if(!SettingsTab.urlTextField.getText().equals("") && !SettingsTab.userTextField.getText().equals("") &&
+                    !SettingsTab.passTextField.getText().equals("")){
+                        DatabaseActionsTab.makeDBBtn.setDisable(false);
+                        DatabaseActionsTab.clearDBBtn.setDisable(false);
+                        DatabaseActionsTab.deleteDBBtn.setDisable(false);
+                        DatabaseActionsTab.buttonsDisabledLabel.setVisible(false);
+                        DatabaseActionsTab.buttonsDisabledLabel.setManaged(false);
+                        CustomLogger.createLogMsgAndSave("Database Actions Enabled");
+            }
+        });
     }
     // End action listeners for DatabaseActionsTab
 

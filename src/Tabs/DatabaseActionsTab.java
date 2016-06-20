@@ -24,6 +24,7 @@ public class DatabaseActionsTab {
     public static Button makeDBBtn = new Button("Make DB");
     public static Button clearDBBtn = new Button("Clear DB");
     public static Button deleteDBBtn = new Button("Delete DB");
+    public static Label buttonsDisabledLabel = new Label("* Fill out database credentials in Settings Tab to unlock buttons *");
 
 
     public static void createDatabaseActionsTab(){
@@ -31,7 +32,7 @@ public class DatabaseActionsTab {
         GridPane gridPane = new GridPane();
         Label titleLabel = new Label("Database Actions");
         HBox titleHBox = new HBox(titleLabel);
-        VBox holdBtnsVBox = new VBox(10, makeDBBtn, clearDBBtn, deleteDBBtn);
+        VBox holdBtnsVBox = new VBox(10, buttonsDisabledLabel, makeDBBtn, clearDBBtn, deleteDBBtn);
         Label warningLabel = new Label("* Ensure Database Credentials In Setting Are Correct *");
         HBox warningHBox = new HBox(warningLabel);
 
@@ -60,14 +61,17 @@ public class DatabaseActionsTab {
         databaseActionsTab.setClosable(false); //Unable to close tab
         databaseActionsTab.setContent(borderPane);
 
+        //Todo Logging for make/clear/delete needs improvement, unable to verify database modified through cmd line, could do a SQL call after to see if successful.
         //Create action listeners
         DatabaseActionListeners.createMakeDBBtnListener(makeDBBtn);
         DatabaseActionListeners.createClearDBBtnListener(clearDBBtn);
         DatabaseActionListeners.createDeleteDBBtnListener(deleteDBBtn);
+        DatabaseActionListeners.createDatabaseActionTabListener(databaseActionsTab);
 
         //Added graphics for looks
-        titleLabel.setStyle("-fx-font-weight: bold");
-        warningLabel.setStyle("-fx-text-fill: darkred");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+        warningLabel.setStyle("-fx-text-fill: darkred;");
+        buttonsDisabledLabel.setStyle("-fx-text-fill: darkred;");
 
         CustomLogger.createLogMsgAndSave("Database tab loaded");
 

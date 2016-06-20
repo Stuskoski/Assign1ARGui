@@ -13,21 +13,9 @@ import javafx.scene.control.Alert;
 public class DatabaseAlerts {
     public void badConnection(String whoNeedsIt){
         CustomLogger.createLogMsgAndSave("Unable to connect to DB.  Opening Database Credentials Editor.", "red");
-        PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt, null, null); //only if error
+        PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt); //only if error
 
     }
-
-    /**
-     * Bad connection message strictly for email method
-     * @param whoNeedsIt String identifier on who needs the prompt for DB credentials screen
-     * @param email the email
-     * @param message the message to be sent
-     */
-    public void badConnection(String whoNeedsIt, String email, String message){
-        CustomLogger.createLogMsgAndSave("Unable to open DB for changing timestamps.  Opening Database Credentials Editor.", "red");
-        PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt, email, message); //only if error
-    }
-
     /**
      * disabled for now. The popup became annoying ...
      */

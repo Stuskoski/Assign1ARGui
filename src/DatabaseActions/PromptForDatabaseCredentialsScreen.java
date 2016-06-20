@@ -16,22 +16,23 @@ import javafx.stage.Stage;
  * to get a database connection.  The screen
  * prompts the user to input the correct credentials.
  *
- * The only function receives a boolean uploadData in
- * which it determines if it needs to set a action
- * listener to upload data after confirmation or if
- * false to just grab an sql connection and send it back.
  *
  */
 public class PromptForDatabaseCredentialsScreen {
     public static Stage dbCredsStage = new Stage(); //prevents multiple windows from popping up without reference to close
-    public static void createScreen(String whoNeedsTheCreds, String optionalEmail, String optionalMsg){
+
+    /**
+     *
+     * @param whoNeedsTheCreds String of who needs the prompt, used to determine which action listener for confirm button will be created
+     */
+    public static void createScreen(String whoNeedsTheCreds){
         GridPane gridPane = new GridPane();
         Scene scene = new Scene(gridPane, 350, 225); //width height
         Label errorLabel = new Label("Error: Unable to make MySQL connection!");
         Label urlLabel = new Label("URL:");
         Label userLabel = new Label("User:");
         Label passLabel = new Label("Password:");
-        Label warningLabel = new Label("* Values Prefilled With Script Credentials *");
+        Label warningLabel = new Label("* URL Prefilled With Script Database *");
         TextField urlTextField = new TextField(SettingsTab.urlTextField.getText());
         TextField userTextField = new TextField(SettingsTab.userTextField.getText());
         TextField passTextField = new TextField(SettingsTab.passTextField.getText());
@@ -43,6 +44,7 @@ public class PromptForDatabaseCredentialsScreen {
 
         //textfield options
         urlTextField.setPromptText("URL Connection String");
+        urlTextField.setTooltip(new Tooltip("Usage: 'jdbc:mysql://[HOST]:[PORT]/[Database Name]'"));
         userTextField.setPromptText("Enter User");
         passTextField.setPromptText("Enter Password");
 
@@ -78,7 +80,7 @@ public class PromptForDatabaseCredentialsScreen {
                 break;
             case "email":
                 DatabaseActionListeners.createConfirmBtnListenerGetConnectionForEmail(confirmDetailsBtn, dbCredsStage, urlTextField,
-                        userTextField, passTextField, optionalEmail, optionalMsg);
+                        userTextField, passTextField);
                 break;
         }
 

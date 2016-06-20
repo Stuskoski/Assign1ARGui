@@ -4,13 +4,10 @@ import FileActions.CustomLogger;
 import FileActions.ReadFile;
 import PeopleModels.Person;
 import PeopleModels.PersonsArrayList;
-import Tabs.HomeTab;
 import Tabs.SettingsTab;
 import Tabs.UploadDataTab;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,15 +21,13 @@ public class ModifyDatabaseMethods {
      * and simply update all the time stamps
      * of every customer is the
      *
-     * @param email the email address
-     * @param message the email message
      */
-    public static void updateTimeStampAfterEmail(String email, String message){
+    public static void updateTimeStampAfterEmail(){
         Statement statement;
         String sqlStr;
 
-        Connection connection = GetDatabaseConnection.getDBForEmail(SettingsTab.urlTextField.getText(),
-                SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText(), "email", email, message);//null null
+        Connection connection = GetDatabaseConnection.getDBConnectionForEmail(SettingsTab.urlTextField.getText(),
+                SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText(), "email");
 
         if(connection!=null){
             CustomLogger.createLogMsgAndSave("Attempting to update email timestamps");
@@ -47,6 +42,8 @@ public class ModifyDatabaseMethods {
             } catch (SQLException e) {
                 CustomLogger.createLogMsgAndSave("Unable to update email timestamps", "red");
             }
+        }else{
+            PromptForDatabaseCredentialsScreen.createScreen("email");
         }
 
     }
@@ -80,7 +77,6 @@ public class ModifyDatabaseMethods {
                     statement.executeUpdate(sqlStr);
 
                 } catch (SQLException e) {
-                    System.out.println(e.toString());
                     CustomLogger.createLogMsgAndSave("Error inserting data", "red");
                 }
             }

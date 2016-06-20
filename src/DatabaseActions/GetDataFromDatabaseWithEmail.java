@@ -360,7 +360,7 @@ public class GetDataFromDatabaseWithEmail {
             sendJavaxEmail(email, emailMsg);
 
             //Update timestamps
-            ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
+            ModifyDatabaseMethods.updateTimeStampAfterEmail();
 
 
             //Send a unsorted email
@@ -388,7 +388,7 @@ public class GetDataFromDatabaseWithEmail {
             sendJavaxEmail(email, emailMsg);
 
             //Update timestamps
-            ModifyDatabaseMethods.updateTimeStampAfterEmail(email, emailMsg);
+            ModifyDatabaseMethods.updateTimeStampAfterEmail();
 
         }
     }

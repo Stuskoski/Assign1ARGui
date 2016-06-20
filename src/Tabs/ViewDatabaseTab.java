@@ -87,7 +87,7 @@ public class ViewDatabaseTab {
         viewDatabaseTab.setContent(borderPane);
 
         //Added graphics
-        title.setStyle("-fx-font-weight: bold");
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
         emailLabel.setStyle("-fx-text-fill: darkred;");
         customerTitleLabel.setStyle("-fx-font-weight: bold");
 

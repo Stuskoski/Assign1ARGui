@@ -2,12 +2,11 @@ package Tabs;
 
 import FileActions.CustomLogger;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * Created by r730819 on 6/15/2016.
@@ -25,8 +24,9 @@ import javafx.scene.layout.HBox;
 public class SettingsTab {
     public static Tab settingsTab = new Tab();
     public static TextField urlTextField = new TextField("jdbc:mysql://localhost:3306/assign1_db_augustus");
-    public static TextField userTextField = new TextField("");
-    public static TextField passTextField = new TextField("");
+    public static TextField userTextField = new TextField();
+    public static TextField passTextField = new TextField();
+    public static PasswordField passPasswordField = new PasswordField();
 
 
     public static void createSettingsTab(){
@@ -35,24 +35,40 @@ public class SettingsTab {
         Label urlLabel = new Label("URL:");
         Label userLabel = new Label("User:");
         Label passLabel = new Label("Password:");
-        Label warningLabel = new Label("* URL Prefilled With Script DB *");
+        Label warningLabel = new Label("* URL Prefilled With Script Database *");
         HBox titleHbox = new HBox(titleLabel);
         BorderPane borderPane = new BorderPane();
+        VBox passwordVBox = new VBox(passTextField, passPasswordField);
+        CheckBox showPassChkBox = new CheckBox("Show Password");
 
-        //titleHbox options
+
+        //titleHBox options
         titleHbox.setAlignment(Pos.CENTER);
 
-        //Borderpane options
+        //BorderPane options
         borderPane.setTop(titleHbox);
         borderPane.setCenter(gridPane);
 
-        //textfield options
+        //Text/Pass Field options
         urlTextField.setPromptText("URL Connection String");
+        urlTextField.setPrefWidth(250);
+        urlTextField.setTooltip(new Tooltip("Usage: 'jdbc:mysql://[HOST]:[PORT]/[Database Name]'"));
+
         userTextField.setPromptText("Enter User");
+        userTextField.setPrefWidth(250);
+
         passTextField.setPromptText("Enter Password");
+        passTextField.setPrefWidth(250);
+        passTextField.setManaged(false);
+        passTextField.setVisible(false);
+
+        passPasswordField.setPromptText("Enter Password");
+        passPasswordField.setPrefWidth(250);
 
 
-        //Gridpane options
+
+
+        //GridPane options
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);
         gridPane.setVgap(5);
@@ -61,7 +77,8 @@ public class SettingsTab {
         gridPane.add(userLabel, 0, 3);
         gridPane.add(userTextField, 2, 3);
         gridPane.add(passLabel, 0, 4);
-        gridPane.add(passTextField, 2, 4);
+        gridPane.add(passwordVBox, 2, 4);
+        gridPane.add(showPassChkBox, 2, 5);
         gridPane.add(warningLabel, 0, 7, 6, 1);
 
 
@@ -70,12 +87,22 @@ public class SettingsTab {
         settingsTab.setText("Settings");
         settingsTab.setClosable(false); //Unable to close tab
 
+        //bind the managed and visibile properties of the fields with the checkbox
+        passTextField.managedProperty().bind(showPassChkBox.selectedProperty());
+        passTextField.visibleProperty().bind(showPassChkBox.selectedProperty());
+        passPasswordField.managedProperty().bind(showPassChkBox.selectedProperty().not());
+        passPasswordField.visibleProperty().bind(showPassChkBox.selectedProperty().not());
+
+        // Bind the TextField and PasswordField to have the same characters
+        passTextField.textProperty().bindBidirectional(passPasswordField.textProperty());
+
+
         //Added graphics just for looks
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
         urlLabel.setStyle("-fx-font-weight: bold");
         userLabel.setStyle("-fx-font-weight: bold");
         passLabel.setStyle("-fx-font-weight: bold");
         warningLabel.setStyle("-fx-text-fill: darkred");
-        titleLabel.setStyle("-fx-font-weight: bold");
 
         CustomLogger.createLogMsgAndSave("Settings tab loaded");
 

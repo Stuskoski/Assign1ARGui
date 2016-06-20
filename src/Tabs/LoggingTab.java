@@ -1,5 +1,6 @@
 package Tabs;
 
+import FileActions.CustomLogger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -47,9 +48,7 @@ public class LoggingTab {
         loggingTab.setContent(borderPane);
 
         //Added graphics for looks
-        titleLabel.setStyle("-fx-font-weight: bold");
-
-        //CustomLogger.createLogMsgAndSave("Logging tab loaded");
+        titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
 
     }
 }
