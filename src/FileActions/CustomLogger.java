@@ -31,22 +31,24 @@ public class CustomLogger {
                 Label logLabel = new Label(date.toString() + ": " + msg);
                 logLabel.setStyle("-fx-text-fill: darkred;");
                 LoggingTab.loggingVbox.getChildren().add(logLabel);
+                logger.info(date.toString() + ": " + msg);
+                logger.error(date.toString() + ": " + msg);
                 break;
             }
             case "green": {
                 Label logLabel = new Label(date.toString() + ": " + msg);
                 logLabel.setStyle("-fx-text-fill: green;");
                 LoggingTab.loggingVbox.getChildren().add(logLabel);
+                logger.info(date.toString() + ": " + msg);
                 break;
             }
             default: {
                 Label logLabel = new Label(date.toString() + ": " + msg);
                 LoggingTab.loggingVbox.getChildren().add(logLabel);
+                logger.info(date.toString() + ": " + msg);
                 break;
             }
         }
-
-        logger.info(date.toString() + ": " + msg);
     }
 
     /**
