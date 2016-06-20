@@ -1,4 +1,4 @@
-package augustus.MainScreen;
+package Main;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;

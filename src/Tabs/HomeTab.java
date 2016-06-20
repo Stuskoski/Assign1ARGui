@@ -1,7 +1,7 @@
 package Tabs;
 
 import FileActions.CustomLogger;
-import augustus.MainScreen.Main;
+import Main.Main;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;

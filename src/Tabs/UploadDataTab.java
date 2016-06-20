@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import FileActions.CheckIfFileExistsAndHandleColor;
-import augustus.MainScreen.MainScreenActionListeners;
+import Main.MainScreenActionListeners;
 import javafx.scene.layout.HBox;
 
 /**

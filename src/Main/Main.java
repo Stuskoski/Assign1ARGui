@@ -1,4 +1,4 @@
-package augustus.MainScreen;
+package Main;
 
 import FileActions.CustomLogger;
 import Tabs.*;
