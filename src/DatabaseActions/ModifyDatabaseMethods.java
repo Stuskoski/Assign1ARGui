@@ -65,6 +65,8 @@ public class ModifyDatabaseMethods {
 
             ReadFile.readAndCreateObjects(new File(UploadDataTab.fileNameTextField.getText()));
 
+            //Alternative, search for mysqlimport.exe then execute the cmd below.  Mysqlimport is probably faster.
+            //'mysqlimport.exe --local -u[USER] -p[PASSWORD] --fields-terminated-by=, assign1_db_augustus [PATH TO FILE]'
             for (Person person : PersonsArrayList.personsArray){
                 try {
                     statement = connection.createStatement();

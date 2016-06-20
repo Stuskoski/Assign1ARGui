@@ -182,7 +182,7 @@ public class GetDataFromDatabaseWithEmail {
 
     /**
      * Similar to the function above but pulls them in sorted order
-     * @param userScrollPane Reference to the scrollpane in the ViewDatabaseTab
+     * @param userScrollPane Reference to the ScrollPane in the ViewDatabaseTab
      */
     public static void getAllSortedUsersFromDatabaseAndAddToVbox(ScrollPane userScrollPane){
 
@@ -192,8 +192,8 @@ public class GetDataFromDatabaseWithEmail {
         if(!PersonArrayListDownloadedFromDB.downloadedArrayList.isEmpty()) {
 
             //Create vbox that holds all the vbox's created below
-            VBox overallVbox = new VBox(20);
-            overallVbox.setAlignment(Pos.CENTER);
+            VBox overallVBox = new VBox(20);
+            overallVBox.setAlignment(Pos.CENTER);
 
             ArrayList<Person> sortedArray;
             ArrayList<Person> tempArray;
@@ -204,7 +204,7 @@ public class GetDataFromDatabaseWithEmail {
             //Add texas title to vbox for display and color red for visibility
             Label texasTitle = new Label("=== Texas Customers ===");
             texasTitle.setStyle("-fx-text-fill: darkred;");
-            overallVbox.getChildren().add(texasTitle);
+            overallVBox.getChildren().add(texasTitle);
 
             CustomLogger.createLogMsgAndSave("Sorting persons");
 
@@ -232,19 +232,19 @@ public class GetDataFromDatabaseWithEmail {
                 //Determine the correct position to put the next label
                 if(!person.state.toLowerCase().equals("tx")){
                     if(firstNonTexan){
-                        //Add non-texas title to vbox for display and color red for visibility
+                        //Add non-texas title to VBox for display and color red for visibility
                         Label nonTexasTitle = new Label("=== Out of State Customers ===");
                         nonTexasTitle.setStyle("-fx-text-fill: darkred;");
-                        overallVbox.getChildren().add(nonTexasTitle);
+                        overallVBox.getChildren().add(nonTexasTitle);
                         firstNonTexan = false;
                     }
                 }
 
-                //Create labels and add to the vbox, I can do this in another method but for now do it here...
+                //Create labels and add to the VBox, I can do this in another method but for now do it here...
                 Label customerNumLabel = new Label("Customer #" + person.customerNum);
                 Label nameLabel = new Label(person.lastName + " " + person.firstName);
                 Label emailLabel = new Label(person.emailAddr);
-                Label homeAddrLabel = new Label(person.homeAddr);
+                Label homeAddressLabel = new Label(person.homeAddr);
                 Label cityLabel = new Label(person.city + ", " + person.state + " " + person.zipCode);
                 Label timeStampLabel = new Label(person.timeStamp);
 
@@ -256,11 +256,11 @@ public class GetDataFromDatabaseWithEmail {
                     Desktop desktop;
                     if (Desktop.isDesktopSupported()
                             && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
-                        URI mailto = null;
+                        URI mailTo = null;
                         try {
 
-                            mailto = new URI("mailto:" + person.emailAddr + "?subject=Assignment1");
-                            desktop.mail(mailto);
+                            mailTo = new URI("mailto:" + person.emailAddr + "?subject=Assignment1");
+                            desktop.mail(mailTo);
                         } catch (URISyntaxException | IOException e) {
                             e.printStackTrace();
                         }
@@ -274,21 +274,21 @@ public class GetDataFromDatabaseWithEmail {
                 emailLabel.setOnMouseExited(event -> emailLabel.setStyle("-fx-text-fill: blue; -fx-underline: true;"));
 
 
-                //Create vbox to add to scrollpane
-                VBox personDetailsVbox = new VBox(3);
-                personDetailsVbox.getChildren().addAll(customerNumLabel, nameLabel, emailLabel, homeAddrLabel,
+                //Create VBox to add to ScrollPane
+                VBox personDetailsVBox = new VBox(3);
+                personDetailsVBox.getChildren().addAll(customerNumLabel, nameLabel, emailLabel, homeAddressLabel,
                         cityLabel, timeStampLabel);
 
                 //Add a box around the vbox to see better
-                personDetailsVbox.setStyle("-fx-border-color: black");
-                personDetailsVbox.setAlignment(Pos.CENTER);
+                personDetailsVBox.setStyle("-fx-border-color: black");
+                personDetailsVBox.setAlignment(Pos.CENTER);
 
-                //Add to overall vbox
-                overallVbox.getChildren().add(personDetailsVbox);
+                //Add to overall VBox
+                overallVBox.getChildren().add(personDetailsVBox);
             }
 
-            //Add the vbox to the scroll pane
-            userScrollPane.setContent(overallVbox);
+            //Add the VBox to the scroll pane
+            userScrollPane.setContent(overallVBox);
         }
 
     }

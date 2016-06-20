@@ -50,8 +50,6 @@ public class GetDatabaseConnection {
      * @param user User name for DB
      * @param password Password for DB
      * @param whoNeedsIt Who needs the database connection.  Used for custom handling.
-     * @param email Email to sent to just in case for email method
-     * @param message Message to be sent just in case for email method
      * @return Return connection strictly for the email method.  Email and msg sent to the method to be attempted to send again.
      */
     public static Connection getDBConnectionForEmail(String url, String user, String password, String whoNeedsIt){

@@ -66,8 +66,6 @@ public class SettingsTab {
         passPasswordField.setPrefWidth(250);
 
 
-
-
         //GridPane options
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(5);

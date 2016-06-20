@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -33,20 +34,26 @@ public class PromptForDatabaseCredentialsScreen {
         Label userLabel = new Label("User:");
         Label passLabel = new Label("Password:");
         Label warningLabel = new Label("* URL Prefilled With Script Database *");
-        TextField urlTextField = new TextField(SettingsTab.urlTextField.getText());
-        TextField userTextField = new TextField(SettingsTab.userTextField.getText());
-        TextField passTextField = new TextField(SettingsTab.passTextField.getText());
+        TextField urlTextField = new TextField();
+        TextField userTextField = new TextField();
+        TextField passTextField = new TextField();
+        PasswordField passPasswordField = new PasswordField();
+        VBox passwordVBox = new VBox(passTextField, passPasswordField);
         Button confirmDetailsBtn = new Button("Confirm");
-        HBox confirmDetailsHbox = new HBox(confirmDetailsBtn);
+        HBox confirmDetailsHBox = new HBox(confirmDetailsBtn);
+        CheckBox showPassChkBox = new CheckBox("Show Password");
 
-        //set hbox to center to center confirm button
-        confirmDetailsHbox.setAlignment(Pos.CENTER);
+        //set HBox to center to center confirm button
+        confirmDetailsHBox.setAlignment(Pos.CENTER);
 
         //textfield options
         urlTextField.setPromptText("URL Connection String");
         urlTextField.setTooltip(new Tooltip("Usage: 'jdbc:mysql://[HOST]:[PORT]/[Database Name]'"));
         userTextField.setPromptText("Enter User");
         passTextField.setPromptText("Enter Password");
+        passTextField.setManaged(false);
+        passTextField.setVisible(false);
+        passPasswordField.setPromptText("Enter Password");
 
 
         //Gridpane options
@@ -60,32 +67,43 @@ public class PromptForDatabaseCredentialsScreen {
         gridPane.add(userLabel, 0, 3);
         gridPane.add(userTextField, 2, 3);
         gridPane.add(passLabel, 0, 4);
-        gridPane.add(passTextField, 2, 4);
-        gridPane.add(confirmDetailsHbox, 0, 9, 4, 1); //col row col_span row_span
+        gridPane.add(passwordVBox, 2, 4);
+        gridPane.add(showPassChkBox, 2, 5);
+        gridPane.add(confirmDetailsHBox, 0, 9, 4, 1); //col row col_span row_span
         gridPane.add(warningLabel, 0, 10, 4, 1);
 
         //Create action listeners
         switch (whoNeedsTheCreds){
             case "uploadData":
-                DatabaseActionListeners.createConfirmBtnListenerUploadData(confirmDetailsBtn, dbCredsStage, urlTextField,
-                        userTextField, passTextField);
+                DatabaseActionListeners.createConfirmBtnListenerUploadData(confirmDetailsBtn, dbCredsStage);
                 break;
             case "texasSort":
-                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForTexasSort(confirmDetailsBtn, dbCredsStage, urlTextField,
-                        userTextField, passTextField);
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForTexasSort(confirmDetailsBtn, dbCredsStage);
                 break;
             case "refresh":
-                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForRefresh(confirmDetailsBtn, dbCredsStage, urlTextField,
-                        userTextField, passTextField);
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForRefresh(confirmDetailsBtn, dbCredsStage);
                 break;
             case "email":
-                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForEmail(confirmDetailsBtn, dbCredsStage, urlTextField,
-                        userTextField, passTextField);
+                DatabaseActionListeners.createConfirmBtnListenerGetConnectionForEmail(confirmDetailsBtn, dbCredsStage);
                 break;
         }
 
         //Stage options
         dbCredsStage.setTitle("Confirm DB Credentials");
+
+        //bind the managed and visibile properties of the fields with the checkbox
+        passTextField.managedProperty().bind(showPassChkBox.selectedProperty());
+        passTextField.visibleProperty().bind(showPassChkBox.selectedProperty());
+        passPasswordField.managedProperty().bind(showPassChkBox.selectedProperty().not());
+        passPasswordField.visibleProperty().bind(showPassChkBox.selectedProperty().not());
+
+        // Bind the TextField and PasswordField to have the same characters
+        passTextField.textProperty().bindBidirectional(passPasswordField.textProperty());
+
+        //Bind the text fields with the text fields in settings
+        urlTextField.textProperty().bindBidirectional(SettingsTab.urlTextField.textProperty());
+        userTextField.textProperty().bindBidirectional(SettingsTab.userTextField.textProperty());
+        passTextField.textProperty().bindBidirectional(SettingsTab.passTextField.textProperty());
 
         //Added graphics just for looks
         urlLabel.setStyle("-fx-font-weight: bold");
