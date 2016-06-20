@@ -17,7 +17,7 @@ import java.io.File;
  * the dimensions for the program,
  * creates the tabs and adds them to
  * the tab pane.  Static reference
- * to the stage and TabPane. 
+ * to the stage and TabPane.
  */
 public class Main extends Application {
     public static Stage primaryStage;

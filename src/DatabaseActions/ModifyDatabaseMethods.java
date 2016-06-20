@@ -1,5 +1,6 @@
 package DatabaseActions;
 
+import CustomAlerts.DatabaseAlerts;
 import FileActions.CustomLogger;
 import FileActions.ReadFile;
 import PeopleModels.Person;
@@ -82,6 +83,9 @@ public class ModifyDatabaseMethods {
                     CustomLogger.createLogMsgAndSave("Error inserting data", "red");
                 }
             }
+
+            DatabaseAlerts alerts = new DatabaseAlerts();
+            alerts.uploadDataSuccess();
         }
     }
 

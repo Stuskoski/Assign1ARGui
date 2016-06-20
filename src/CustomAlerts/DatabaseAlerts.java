@@ -2,7 +2,10 @@ package CustomAlerts;
 
 import DatabaseActions.PromptForDatabaseCredentialsScreen;
 import FileActions.CustomLogger;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
+import javafx.util.Duration;
 
 /**
  * Created by r730819 on 6/14/2016.
@@ -16,6 +19,26 @@ public class DatabaseAlerts {
         PromptForDatabaseCredentialsScreen.createScreen(whoNeedsIt); //only if error
 
     }
+
+    /**
+     * Just a quick popup to show upload data was successful
+     */
+    public void uploadDataSuccess(){
+        CustomLogger.createLogMsgAndSave("Upload data finished successfully");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("Successful Data Upload");
+
+        alert.show();
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+           alert.close();
+        }));
+        timeline.play();
+    }
+
+
     /**
      * disabled for now. The popup became annoying ...
      */
