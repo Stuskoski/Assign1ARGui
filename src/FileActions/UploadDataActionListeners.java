@@ -1,9 +1,10 @@
-package Main;
+package FileActions;
 
 import DatabaseActions.GetDatabaseConnection;
 import DatabaseActions.ModifyDatabaseMethods;
 import FileActions.CheckIfFileExistsAndHandleColor;
 import FileActions.CustomLogger;
+import Main.Main;
 import Tabs.UploadDataTab;
 import Tabs.SettingsTab;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ import java.sql.Connection;
  * This class contains all the event listeners
  * for the main landing stage.
  */
-public class MainScreenActionListeners {
+public class UploadDataActionListeners {
     /**
      * Create a listener that will check if the file
      * exists every time the user enters a character.
@@ -81,13 +82,11 @@ public class MainScreenActionListeners {
      */
     public static void createParseFileBanListener(Button parseFile){
         parseFile.setOnAction(event -> {
-            //ReadFile.readAndCreateObjects(new File(Main.fileNameTextField.getText()));
             Connection connection = GetDatabaseConnection.getDB(SettingsTab.urlTextField.getText(),
                     SettingsTab.userTextField.getText(), SettingsTab.passTextField.getText(), "uploadData"); //true for prompt screen
 
             if(connection!=null)
                 ModifyDatabaseMethods.attemptUploadData(connection);
-            //GetDatabaseConnection.getDB();
         });
     }
 }

@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import FileActions.CheckIfFileExistsAndHandleColor;
-import Main.MainScreenActionListeners;
+import FileActions.UploadDataActionListeners;
 import javafx.scene.layout.HBox;
 
 /**
@@ -55,9 +55,9 @@ public class UploadDataTab {
         fileNameTextField.setPrefWidth(300);
 
         //Create listeners
-        MainScreenActionListeners.createTextFieldListener(parseFile);
-        MainScreenActionListeners.createChooseFileListener(chooseFile, parseFile);
-        MainScreenActionListeners.createParseFileBanListener(parseFile);
+        UploadDataActionListeners.createTextFieldListener(parseFile);
+        UploadDataActionListeners.createChooseFileListener(chooseFile, parseFile);
+        UploadDataActionListeners.createParseFileBanListener(parseFile);
 
         //Initially set the button to disabled till a file check is passed
         parseFile.setDisable(true);

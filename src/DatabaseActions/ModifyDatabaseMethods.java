@@ -72,6 +72,7 @@ public class ModifyDatabaseMethods {
                 try {
                     statement = connection.createStatement();
 
+                    //Vulnerable to sql injection if you type extra junk into file with last field
                     sqlStr = "INSERT INTO customers(last_name, first_name, email_addr, home_addr, city, state, zip_code)" +
                             "VALUES ('"+ person.lastName + "','" + person.firstName + "','" + person.emailAddr + "','" +
                             person.homeAddr + "','" + person.city + "','" + person.state + "','" + person.zipCode +

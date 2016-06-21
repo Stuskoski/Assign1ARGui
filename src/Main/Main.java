@@ -62,9 +62,6 @@ public class Main extends Application {
         //Add logging tab here for positioning
         tabPane.getTabs().add(LoggingTab.loggingTab);
 
-
-
-
         //remove temp files if closed
         primaryStage.setOnCloseRequest(event -> {
             File temp = new File("temp-augustus.sql");

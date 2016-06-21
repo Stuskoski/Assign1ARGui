@@ -65,6 +65,7 @@ public class GetDataFromDatabaseWithEmail {
                 CustomLogger.createLogMsgAndSave("Pulling customers from database");
                 statement = connection.createStatement();
 
+                //Note - Never use * even if all fields are being pulled
                 sqlStr = "SELECT * FROM customers;";
 
                 ResultSet rs = statement.executeQuery(sqlStr);
@@ -322,7 +323,10 @@ public class GetDataFromDatabaseWithEmail {
 
     /**
      * Creates the email with it being sorted or unsorted
-     * and then sends to the next method to be sent via Javax
+     * and then sends to the next method to be sent via Javax.
+     *
+     * If sortEmail is true, sort the array and then create
+     * email with sorted array, else send non sorted.
      * @param email The email to send to
      * @param sortEmail Boolean whether to sort or not
      */
